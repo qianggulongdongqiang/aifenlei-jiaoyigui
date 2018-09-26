@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
+    <dimen name="account_height">240dp</dimen>
+    <dimen name="actionbar_height">106dp</dimen>
+    <dimen name="login_size">64dp</dimen>
+    <dimen name="login_margin_right">30dp</dimen>
+    <dimen name="layout_margin">20dp</dimen>
+    <dimen name="layout_bottom_margin">13dp</dimen>
+    <dimen name="info_layout_height">270dp</dimen>
+    <dimen name="info_collect_margin">30dp</dimen>
+    <dimen name="info_right_title_margin">9dp</dimen>
+    <dimen name="collect_layout_height">1160dp</dimen>
+    <dimen name="collect_main_height">1060dp</dimen>
+    <dimen name="collect_item_height">352dp</dimen>
+    <dimen name="collect_layout_marging_top">30dp</dimen>
+    <dimen name="weight_content_height">324dp</dimen>
+    <dimen name="viewpager_indicator_height">76dp</dimen>
+    <dimen name="viewpager_indicator_round_size">24dp</dimen>
+    <dimen name="viewpager_indicator_width">124dp</dimen>
+    <dimen name="gridview_columnwidth">350dp</dimen>
+
+    <dimen name="dot_line_height">286dp</dimen>
+    <dimen name="dot_line_padding">-135dp</dimen>
+
+    <dimen name="weight_title_height">314dp</dimen>
+    <dimen name="weight_left_width">518dp</dimen>
+    <dimen name="weight_right_width">518dp</dimen>
+    <dimen name="weight_left_title_margin">10dp</dimen>
+    <dimen name="weight_left_info_margin">10dp</dimen>
+    <dimen name="weight_right_info_margin">0dp</dimen>
+    <dimen name="weight_right_btn_margin">0dp</dimen>
+
+    <!--     home -->
+    <dimen name="image_left_margin">13dp</dimen>
+    <dimen name="image_top_margin">30dp</dimen>
+
+    <!--     exchange -->
+    <dimen name="viewpager_margin_top">-50dp</dimen>
+    <dimen name="viewpager_height">859dp</dimen>
+    <dimen name="exchange_main_height">830dp</dimen>
+    <dimen name="exchange_viewpager_height">750dp</dimen>
+    <dimen name="exchange_main_margin_top">81dp</dimen>
+    <dimen name="exchange_main_margin_bot">76dp</dimen>
+
+    <dimen name="exchange_title_layout_height">330dp</dimen>
+    <dimen name="exchange_title_wh_height">81dp</dimen>
+
+    <!--     dialog -->
+    <dimen name="dialog_layout_width">952dp</dimen>
+    <dimen name="dialog_close_width">96dp</dimen>
+    <dimen name="dialog_close_half">48dp</dimen>
+    <dimen name="info_margin">90dp</dimen>
+    <dimen name="dialog_dot_margin">110dp</dimen>
+    <dimen name="dialog_dot_gap">50dp</dimen>
+    <dimen name="dialog_delete_width">96dp</dimen>
+    <dimen name="dialog_top_margin">130dp</dimen>
+    <dimen name="dialog_btn_width">400dp</dimen>
+    <dimen name="dialog_btn_height">90dp</dimen>
+    <dimen name="dialog_btn_margin_bottom">80dp</dimen>
+    <dimen name="dialog_list_divider_height">36dp</dimen>
+    <dimen name="dialog_list_item_name_width">400dp</dimen>
+
+    <dimen name="actionbar_title_size">45sp</dimen>
+    <dimen name="actionbar_item_size">36sp</dimen>
+    <dimen name="info_left_title_size">32sp</dimen>
+    <dimen name="info_right_title_size">48sp</dimen>
+    <dimen name="weight_title_size">32sp</dimen>
+    <dimen name="left_msg_size">50sp</dimen>
+    <dimen name="left_small_size">30sp</dimen>
+    <dimen name="left_big_size">90sp</dimen>
+    <dimen name="right_msg_size">90sp</dimen>
+    <dimen name="dialog_weight_left">42sp</dimen>
+    <dimen name="dialog_weight_right">48sp</dimen>
+
+    <integer name="num_columns">3</integer>
+    <integer name="num_total_grid">9</integer>
+</resources>

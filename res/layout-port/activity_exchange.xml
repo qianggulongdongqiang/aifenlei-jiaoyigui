@@ -1,0 +1,55 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.uhf.uhf"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <include layout="@layout/activity_title" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_port"
+        android:baselineAligned="false"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/exchange_title_layout_height" >
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/exchange_title_wh_height"
+                android:layout_alignParentBottom="true"
+                android:background="@color/white" />
+            <include layout="@layout/activity_feedback_info" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/collect_ll"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/exchange_main_height"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
+            android:background="@drawable/ll_exchange_bg"
+            android:orientation="vertical" >
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/exchange_viewpager_height"
+                android:background="@drawable/ll_collect_border"
+                android:layout_marginTop="@dimen/exchange_main_margin_top" />
+
+            <com.user.box.data.CirclePageIndicator
+                android:id="@+id/indicator"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/viewpager_indicator_height"
+                app:round_size="24dp"
+                app:round_width="124dp"
+                app:backgroud_checked="@drawable/ind_on"
+                app:backgroud_unchecked="@drawable/ind_off" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

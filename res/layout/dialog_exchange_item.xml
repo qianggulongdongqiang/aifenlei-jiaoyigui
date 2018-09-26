@@ -1,0 +1,33 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center" >
+
+    <TextView
+        android:id="@+id/item_name"
+        android:layout_width="@dimen/dialog_list_item_name_width"
+        android:layout_height="wrap_content"
+        android:text="@string/dialog_category"
+        android:textColor="@color/dialog_default"
+        android:textSize="@dimen/dialog_weight_left" />
+
+    <TextView
+        android:layout_toRightOf="@id/item_name"
+        android:id="@+id/item_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/info_margin"
+        android:text="@string/item_count"
+        android:textColor="@color/dialog_info"
+        android:textSize="@dimen/dialog_weight_right" />
+
+    <TextView
+        android:layout_alignParentRight="true"
+        android:id="@+id/item_credit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/item_credit"
+        android:textColor="@color/dialog_default"
+        android:textSize="@dimen/dialog_weight_left" />
+
+</RelativeLayout>

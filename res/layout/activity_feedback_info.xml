@@ -1,0 +1,47 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/info_ll"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/info_layout_height"
+    android:layout_marginEnd="@dimen/layout_margin"
+    android:layout_marginStart="@dimen/layout_margin"
+    android:layout_marginTop="@dimen/info_collect_margin"
+    android:background="@drawable/rectangle_border_bg"
+    android:baselineAligned="false"
+    android:orientation="horizontal"
+    android:weightSum="2" >
+
+    <TextView
+        android:id="@+id/user_info"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:lineSpacingExtra="5dp"
+        android:paddingStart="20dp"
+        android:textColor="@color/def_text_color"
+        android:textSize="@dimen/info_left_title_size" />
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1" >
+
+        <TextView
+            android:id="@+id/cur_credit_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/def_text_color"
+            android:textSize="@dimen/info_right_title_size" />
+
+        <TextView
+            android:id="@+id/ava_credit_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/cur_credit_info"
+            android:layout_marginTop="@dimen/info_right_title_margin"
+            android:textColor="@color/def_text_color"
+            android:textSize="@dimen/info_right_title_size" />
+    </RelativeLayout>
+
+</LinearLayout>

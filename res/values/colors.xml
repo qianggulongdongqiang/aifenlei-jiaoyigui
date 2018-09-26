@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="white">@android:color/white</color>
+    <color name="transparent">@android:color/transparent</color>
+    <color name="grey">#cccccc</color>
+    <color name="action_bar_bg_color">#3E3A39</color>
+    <color name="action_bar_text_color">#f4c520</color>
+    <color name="def_text_color">@android:color/black</color>
+    <color name="dialog_default">#666666</color>
+    <color name="dialog_info">#333333</color>
+    <color name="dialog_yellow">#f4c31a</color>
+</resources>

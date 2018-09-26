@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
+    <string name="app_name">爱分类 爱回收</string>
+    <string name="yes">是</string>
+    <string name="no">否</string>
+    <string name="ok">确定</string>
+    <string name="cancel">取消</string>
+    <string name="goon">继续</string>
+    <string name="alert_diag_title">提示</string>
+    <string name="are_you_sure_to_exit">确认要退出吗？</string>
+    <string name="connect_rs232">"串口连接"</string>
+    <string name="connect">"立即连接"</string>
+    <string name="com_port">串口号:</string>
+    <string name="baud_rate">波特率:</string>
+    <string name="rs232_error">"串口参数设置错误"</string>
+    <string name="save">保存</string>
+    <string name="unsave">不保存</string>
+    <string name="open">打开</string>
+    <string name="close">关闭</string>
+    <string name="set">设置</string>
+    <string name="get">读取</string>
+    <string name="name1">周先生</string>
+    <string name="name2">陶先生</string>
+    <string name="name3">豪先生</string>
+    <string name="name4">路先生</string>
+    <string name="name5">张先生</string>
+    <string name="name6">李先生</string>
+
+    <!-- add -->
+    <string name="actionbar_app_name">爱分类 爱回收</string>
+    <string name="actionbar_msg">智能交易柜</string>
+    <string name="actionbar_top">首页</string>
+    <string name="actionbar_transaction">交易</string>
+    <string name="actionbar_exchange">兑换</string>
+    <string name="account_info">账户信息</string>
+    <string name="collect_res">回收资源</string>
+    <string name="weight_des1">当前重量</string>
+    <string name="weight_des2">当前件数</string>
+    <string name="weight_tip1">(10积分/kg)</string>
+    <string name="weight_tip2">(10积分/件)</string>
+    <string name="weight_credit">积分</string>
+    <string name="weight_msg"><xliff:g>%1$2s</xliff:g>kg</string>
+    <string name="account_detail">你好，<xliff:g>%1$2s</xliff:g>！</string>
+    <string name="account_detail2">\n感谢为资源回收做出贡献</string>
+    <string name="credit_detail">当前积分  <xliff:g>%1$2s</xliff:g></string>
+    <string name="credit_detail2">可用积分  <xliff:g>%1$2s</xliff:g></string>
+    <string name="empty">ImageView</string>
+
+    <string name="dialog_delete">"删除"</string>
+    <string name="dialog_name">"用户名:"</string>
+    <string name="dialog_phone">"手机号:"</string>
+    <string name="dialog_owner">"回收员:"</string>
+    <string name="dialog_category">"资源种类:"</string>
+    <string name="dialog_weight">"资源重量:"</string>
+    <string name="dialog_pieces">"资源件数:"</string>
+    <string name="dialog_credit_income">"入账积分:"</string>
+    <string name="dialog_exchange_need">"需要积分:"</string>
+    <string name="dialog_exchange_avaiable">"可用积分:"</string>
+
+    <string name="item_count">x<xliff:g>%1$2s</xliff:g></string>
+    <string name="item_credit">"0"</string>
+    <string name="rs232_lost_connect">"连接已断开"</string>
+</resources>

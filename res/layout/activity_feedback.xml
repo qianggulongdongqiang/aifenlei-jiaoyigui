@@ -1,0 +1,176 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.uhf.uhf"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <include layout="@layout/activity_title" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_land"
+        android:baselineAligned="false"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:id="@+id/info_ll"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/info_layout_height"
+            android:layout_marginEnd="@dimen/layout_margin"
+            android:layout_marginStart="@dimen/layout_margin"
+            android:layout_marginTop="@dimen/info_collect_margin"
+            android:background="@drawable/rectangle_border_bg"
+            android:baselineAligned="false"
+            android:weightSum="2"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/user_info"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:lineSpacingExtra="5dp"
+                android:paddingStart="20dp"
+                android:textColor="@color/def_text_color"
+                android:layout_weight="1"
+                android:textSize="@dimen/info_left_title_size" />
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical" >
+
+                <TextView
+                    android:id="@+id/cur_credit_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/def_text_color"
+                    android:textSize="@dimen/info_right_title_size" />
+
+                <TextView
+                    android:id="@+id/ava_credit_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/cur_credit_info"
+                    android:textColor="@color/def_text_color"
+                    android:layout_marginTop="@dimen/info_right_title_margin"
+                    android:textSize="@dimen/info_right_title_size" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/collect_ll"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/collect_layout_height"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
+            android:background="@drawable/ll_collect_bg"
+            android:orientation="vertical" >
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/collect_main_height"
+                android:background="@drawable/ll_collect_border"
+                android:layout_marginTop="@dimen/collect_layout_marging_top" />
+
+            <com.user.box.data.CirclePageIndicator
+                android:id="@+id/indicator"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/viewpager_indicator_height"
+                app:round_size="24dp"
+                app:round_width="124dp"
+                app:backgroud_checked="@drawable/ind_on"
+                app:backgroud_unchecked="@drawable/ind_off" />
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/weight_ll"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/weight_content_height"
+            android:layout_marginBottom="@dimen/info_collect_margin"
+            android:layout_marginStart="@dimen/layout_bottom_margin"
+            android:layout_marginEnd="@dimen/layout_bottom_margin"
+            android:background="@drawable/rectangle_border_weight_body" >
+
+            <View
+                android:id="@+id/dot_line"
+                android:layout_width="@dimen/dot_line_height"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="@dimen/dot_line_padding"
+                android:layout_marginRight="@dimen/dot_line_padding"
+                android:background="@drawable/dotted_line"
+                android:layerType="software" />
+
+            <LinearLayout
+                android:layout_toLeftOf="@id/dot_line"
+                android:layout_width="@dimen/weight_left_width"
+                android:layout_height="match_parent"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/weight_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/weight_left_title_margin"
+                    android:text="@string/weight_des1"
+                    android:layout_gravity="center_horizontal"
+                    android:textColor="@color/def_text_color"
+                    android:textSize="@dimen/left_msg_size" />
+                <TextView
+                    android:id="@+id/weight_tip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/weight_tip1"
+                    android:layout_gravity="center_horizontal"
+                    android:textColor="@color/action_bar_text_color"
+                    android:textSize="@dimen/left_small_size" />
+                <TextView
+                    android:id="@+id/weight_detail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/def_text_color"
+                    android:layout_marginTop="@dimen/weight_left_info_margin"
+                    android:layout_gravity="center_horizontal"
+                    android:textSize="@dimen/right_msg_size"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_toRightOf="@id/dot_line"
+                android:layout_width="@dimen/weight_right_width"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/weight_left_title_margin"
+                    android:text="@string/weight_credit"
+                    android:layout_gravity="center_horizontal"
+                    android:textColor="@color/def_text_color"
+                    android:textSize="@dimen/left_msg_size" />
+                <TextView
+                    android:id="@+id/credit_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/weight_right_info_margin"
+                    android:textColor="@color/action_bar_text_color"
+                    android:textSize="@dimen/right_msg_size" />
+                <Button
+                    android:id="@+id/ensure_pad"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ensure_pay"
+                    android:layout_marginTop="@dimen/weight_right_btn_margin"
+                    android:layout_gravity="center_horizontal" />
+            </LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>
+
+</LinearLayout>

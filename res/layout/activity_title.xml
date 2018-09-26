@@ -1,0 +1,74 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/actionbar_height"
+    android:background="@color/action_bar_bg_color" >
+
+    <TextView
+        android:id="@+id/title_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="10dp"
+        android:text="@string/actionbar_app_name"
+        android:textColor="@color/action_bar_text_color"
+        android:textSize="@dimen/actionbar_title_size"
+        android:typeface="sans" />
+
+    <Button
+        android:id="@+id/login_btn"
+        android:layout_width="@dimen/login_size"
+        android:layout_height="@dimen/login_size"
+        android:layout_alignParentRight="true"
+        android:layout_centerInParent="true"
+        android:layout_marginRight="@dimen/login_margin_right"
+        android:background="@drawable/person" />
+
+    <LinearLayout
+        android:layout_toLeftOf="@id/login_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="10dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="7dp" >
+
+        <TextView
+            android:id="@+id/main_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/actionbar_top"
+            android:layout_marginEnd="10dp"
+            android:textColor="@color/action_bar_text_color"
+            android:textSize="@dimen/actionbar_item_size" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="20dp"
+            android:background="@color/action_bar_text_color"/>
+
+        <TextView
+            android:id="@+id/exchange_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/action_bar_text_color"
+            android:text="@string/actionbar_exchange"
+            android:textSize="@dimen/actionbar_item_size" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="20dp"
+            android:background="@color/action_bar_text_color"/>
+
+        <TextView
+            android:id="@+id/transaction_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/action_bar_text_color"
+            android:text="@string/actionbar_transaction"
+            android:textSize="@dimen/actionbar_item_size" />
+    </LinearLayout>
+
+</RelativeLayout>

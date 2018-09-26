@@ -1,0 +1,90 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:weightSum="2"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/dialog_category"
+            android:gravity="right"
+            android:layout_weight="1"
+            android:textColor="@color/dialog_default"
+            android:textSize="@dimen/dialog_weight_left" />
+
+        <TextView
+            android:id="@+id/dialog_category"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/info_margin"
+            android:text="@string/dialog_category"
+            android:gravity="left"
+            android:layout_weight="1"
+            android:textColor="@color/dialog_info"
+            android:textSize="@dimen/dialog_weight_right" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:weightSum="2"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/dialog_weight"
+            android:gravity="right"
+            android:layout_weight="1"
+            android:textColor="@color/dialog_default"
+            android:textSize="@dimen/dialog_weight_left" />
+
+        <TextView
+            android:id="@+id/dialog_weight"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/info_margin"
+            android:text="@string/dialog_weight"
+            android:gravity="left"
+            android:layout_weight="1"
+            android:textColor="@color/dialog_info"
+            android:textSize="@dimen/dialog_weight_right" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:weightSum="2"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/dialog_credit_income"
+            android:gravity="right"
+            android:layout_weight="1"
+            android:textColor="@color/dialog_default"
+            android:textSize="@dimen/dialog_weight_left" />
+
+        <TextView
+            android:id="@+id/dialog_credit_income"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/info_margin"
+            android:text="@string/dialog_credit_income"
+            android:gravity="left"
+            android:layout_weight="1"
+            android:textColor="@color/dialog_yellow"
+            android:textSize="@dimen/dialog_weight_right" />
+    </LinearLayout>
+</LinearLayout>
