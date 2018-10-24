@@ -1,15 +1,3 @@
-/**
- * ÎÄ¼şÃû £ºReaderMethod.java
- * CopyRright (c) 2008-xxxx:
- * ÎÄ¼ş±àºÅ£º2014-03-12_001
- * ´´½¨ÈË£ºJie Zhu
- * ÈÕÆÚ£º2014/03/12
- * ĞŞ¸ÄÈË£ºJie Zhu
- * ÈÕÆÚ£º2014/03/12
- * ÃèÊö£º³õÊ¼°æ±¾
- * °æ±¾£º1.0.0
- */
-
 package com.reader.base;
 
 import java.io.IOException;
@@ -17,39 +5,32 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Arrays;
 
-import com.reader.base.CMD;
-import com.reader.base.HEAD;
-
 public abstract class ReaderBase {
     private WaitThread mWaitThread = null;
     private InputStream mInStream = null;
     private OutputStream mOutStream = null;
 
     /**
-     * Á¬½Ó¶ªÊ§¡£
+     * è¿æ¥ä¸¢å¤±ã€‚
      */
     public abstract void onLostConnect();
 
     /**
-     * ¿ÉÖØĞ´º¯Êı£¬½âÎöµ½Ò»°üÊı¾İºó»áµ÷ÓÃ´Ëº¯Êı¡£
-     * 
+     * å¯é‡å†™å‡½æ•°ï¼Œè§£æåˆ°ä¸€åŒ…æ•°æ®åä¼šè°ƒç”¨æ­¤å‡½æ•°ã€‚
      * @param msgTran
-     *            ½âÎöµ½µÄ°ü
      */
-    public abstract void analyData(MessageTran msgTran);
+    public abstract void analyData(byte[] btAryReceiveData);
 
-    // ¼ÇÂ¼Î´´¦ÀíµÄ½ÓÊÕÊı¾İ£¬Ö÷Òª¿¼ÂÇ½ÓÊÕÊı¾İ·Ö¶Î
-    private byte[] m_btAryBuffer = new byte[4096];
-    // ¼ÇÂ¼Î´´¦ÀíÊı¾İµÄÓĞĞ§³¤¶È
+    // è®°å½•æœªå¤„ç†çš„æ¥æ”¶æ•°æ®ï¼Œä¸»è¦è€ƒè™‘æ¥æ”¶æ•°æ®åˆ†æ®µ
+    private byte[] m_btAryBuffer = new byte[1024];
+    // è®°å½•æœªå¤„ç†æ•°æ®çš„æœ‰æ•ˆé•¿åº¦
     private int m_nLength = 0;
 
     /**
-     * ´ø²Î¹¹Ôìº¯Êı£¬¹¹ÔìÒ»¸ö´øÊäÈë¡¢Êä³öÁ÷µÄReader¡£
+     * å¸¦å‚æ„é€ å‡½æ•°ï¼Œæ„é€ ä¸€ä¸ªå¸¦è¾“å…¥ã€è¾“å‡ºæµçš„Readerã€‚
      * 
      * @param in
-     *            ÊäÈëÁ÷
      * @param out
-     *            Êä³öÁ÷
      */
     public ReaderBase(InputStream in, OutputStream out) {
         this.mInStream = in;
@@ -68,9 +49,7 @@ public abstract class ReaderBase {
     }
 
     /**
-     * Ñ­»·½ÓÊÕÊı¾İÏß³Ì¡£
-     * 
-     * @author Jie
+     * å¾ªç¯æ¥æ”¶æ•°æ®çº¿ç¨‹ã€‚
      */
     private class WaitThread extends Thread {
         private boolean mShouldRunning = true;
@@ -81,7 +60,7 @@ public abstract class ReaderBase {
 
         @Override
         public void run() {
-            byte[] btAryBuffer = new byte[4096];
+            byte[] btAryBuffer = new byte[1024];
             while (mShouldRunning) {
                 try {
                     int nLenRead = mInStream.read(btAryBuffer);
@@ -109,7 +88,7 @@ public abstract class ReaderBase {
     };
 
     /**
-     * ÍË³ö½ÓÊÕÏß³Ì¡£
+     * é€€å‡ºæ¥æ”¶çº¿ç¨‹ã€‚
      */
     public final void signOut() {
         mWaitThread.signOut();
@@ -122,10 +101,9 @@ public abstract class ReaderBase {
     }
 
     /**
-     * ´ÓÊäÈëÁ÷¶ÁÈ¡Êı¾İºó£¬»áµ÷ÓÃ´Ëº¯Êı¡£
+     * ä»è¾“å…¥æµè¯»å–æ•°æ®åï¼Œä¼šè°ƒç”¨æ­¤å‡½æ•°ã€‚
      * 
      * @param btAryReceiveData
-     *            ½ÓÊÕµ½µÄÊı¾İ
      */
     private void runReceiveDataCallback(byte[] btAryReceiveData) {
         try {
@@ -138,25 +116,24 @@ public abstract class ReaderBase {
             System.arraycopy(btAryReceiveData, 0, btAryBuffer, m_nLength,
                     btAryReceiveData.length);
 
-            // ·ÖÎö½ÓÊÕÊı¾İ£¬ÒÔ0xA0ÎªÊı¾İÆğµã£¬ÒÔĞ­ÒéÖĞÊı¾İ³¤¶ÈÎªÊı¾İÖÕÖ¹µã
-            int nIndex = 0; // µ±Êı¾İÖĞ´æÔÚA0Ê±£¬¼ÇÂ¼Êı¾İµÄÖÕÖ¹µã
-            int nMarkIndex = 0; // µ±Êı¾İÖĞ²»´æÔÚA0Ê±£¬nMarkIndexµÈÓÚÊı¾İ×é×î´óË÷Òı
+            // åˆ†ææ¥æ”¶æ•°æ®ï¼Œä»¥HEADä¸ºæ•°æ®èµ·ç‚¹ï¼Œä»¥åè®®ä¸­æ•°æ®é•¿åº¦ä¸ºæ•°æ®ç»ˆæ­¢ç‚¹
+            int nIndex = 0; // å½“æ•°æ®ä¸­å­˜åœ¨HEADæ—¶ï¼Œè®°å½•æ•°æ®çš„ç»ˆæ­¢ç‚¹
+            int nMarkIndex = 0; // å½“æ•°æ®ä¸­ä¸å­˜åœ¨HEADæ—¶ï¼ŒnMarkIndexç­‰äºæ•°æ®ç»„æœ€å¤§ç´¢å¼•
             for (int nLoop = 0; nLoop < btAryBuffer.length; nLoop++) {
                 if (btAryBuffer.length > nLoop + 1) {
-                    if (btAryBuffer[nLoop] == HEAD.HEAD) {
-                        int nLen = btAryBuffer[nLoop + 1] & 0xFF;
-                        if (nLoop + 1 + nLen < btAryBuffer.length) {
-                            byte[] btAryAnaly = new byte[nLen + 2];
+                    if (btAryBuffer[nLoop] == CMD.HEAD) {
+                        int nLen = 21;
+                        if (nLoop + nLen < btAryBuffer.length) {
+                            byte[] btAryAnaly = new byte[nLen + 1];
                             System.arraycopy(btAryBuffer, nLoop, btAryAnaly, 0,
-                                    nLen + 2);
+                                    nLen + 1);// +1 is BEG
 
-                            MessageTran msgTran = new MessageTran(btAryAnaly);
-                            analyData(msgTran);
+                            analyData(btAryAnaly);
 
-                            nLoop += 1 + nLen;
-                            nIndex = nLoop + 1;
+                            nLoop += nLen;
+                            nIndex = nLoop + 1;// +1 move to END index
                         } else {
-                            nLoop += 1 + nLen;
+                            nLoop += nLen;
                         }
                     } else {
                         nMarkIndex = nLoop;
@@ -170,7 +147,7 @@ public abstract class ReaderBase {
 
             if (nIndex < btAryBuffer.length) {
                 m_nLength = btAryBuffer.length - nIndex;
-                Arrays.fill(m_btAryBuffer, 0, 4096, (byte) 0);
+                Arrays.fill(m_btAryBuffer, 0, 1024, (byte) 0);
                 System.arraycopy(btAryBuffer, nIndex, m_btAryBuffer, 0,
                         btAryBuffer.length - nIndex);
             } else {
@@ -182,40 +159,35 @@ public abstract class ReaderBase {
     }
 
     /**
-     * ¿ÉÖØĞ´º¯Êı£¬½ÓÊÕµ½Êı¾İÊ±»áµ÷ÓÃ´Ëº¯Êı¡£
-     * 
      * @param btAryReceiveData
-     *            ÊÕµ½µÄÊı¾İ
      */
     public void reciveData(byte[] btAryReceiveData) {
     };
 
     /**
-     * ¿ÉÖØĞ´º¯Êı£¬·¢ËÍÊı¾İºó»áµ÷ÓÃ´Ëº¯Êı¡£
-     * 
      * @param btArySendData
-     *            ·¢ËÍµÄÊı¾İ
      */
     public void sendData(byte[] btArySendData) {
     };
 
     /**
-     * ·¢ËÍÊı¾İ£¬Ê¹ÓÃsynchronized()·ÀÖ¹²¢·¢²Ù×÷¡£
+     * å‘é€æ•°æ®ï¼Œä½¿ç”¨synchronized()é˜²æ­¢å¹¶å‘æ“ä½œã€‚
      * 
-     * @param btArySenderData
-     *            Òª·¢ËÍµÄÊı¾İ
-     * @return ³É¹¦ :0, Ê§°Ü:-1
+     * @param btArySenderData to send
+     * @return success 0, fail -1
      */
     private int sendMessage(byte[] btArySenderData) {
 
         try {
-            synchronized (mOutStream) { // ·ÀÖ¹²¢·¢
+            synchronized (mOutStream) { // é˜²æ­¢å¹¶å‘
                 mOutStream.write(btArySenderData);
+                mOutStream.flush();
             }
         } catch (IOException e) {
             onLostConnect();
             return -1;
         } catch (Exception e) {
+            onLostConnect();
             return -1;
         }
 
@@ -224,1064 +196,54 @@ public abstract class ReaderBase {
         return 0;
     }
 
-    private int sendMessage(byte btReadId, byte btCmd) {
-        MessageTran msgTran = new MessageTran(btReadId, btCmd);
-
-        return sendMessage(msgTran.getAryTranData());
-    }
-
-    private int sendMessage(byte btReadId, byte btCmd, byte[] btAryData) {
-        MessageTran msgTran = new MessageTran(btReadId, btCmd, btAryData);
-
-        return sendMessage(msgTran.getAryTranData());
-    }
-
-    /**
-     * ¸´Î»Ö¸¶¨µØÖ·µÄ¶ÁĞ´Æ÷¡£
-     * 
-     * @param btReadId
-     *            ¶ÁĞ´Æ÷µØÖ·(0xFF¹«ÓÃµØÖ·)
-     * @return ³É¹¦ :0, Ê§°Ü:-1
-     */
-    public final int reset(byte btReadId) {
-
-        byte btCmd = CMD.RESET;
-
-        int nResult = sendMessage(btReadId, btCmd);
-
-        return nResult;
-    }
-
-    /**
-     * ÉèÖÃ´®¿ÚÍ¨Ñ¶²¨ÌØÂÊ¡£
-     * 
-     * @param btReadId
-     *            ¶ÁĞ´Æ÷µØÖ·(0xFF¹«ÓÃµØÖ·)
-     * @param nIndexBaudrate
-     *            ²¨ÌØÂÊ(0x03: 38400bps, 0x04:115200 bps)
-     * @return ³É¹¦ :0, Ê§°Ü:-1
-     */
-    public final int setUartBaudrate(byte btReadId, byte nIndexBaudrate) {
-        byte btCmd = CMD.SET_UART_BAUDRATE;
-        byte[] btAryData = new byte[1];
-
-        btAryData[0] = nIndexBaudrate;
-
-        int nResult = sendMessage(btReadId, btCmd, btAryData);
-
-        return nResult;
-    }
-
-    /**
-     * ¶ÁÈ¡¶ÁĞ´Æ÷¹Ì¼ş°æ±¾¡£
-     * 
-     * @param btReadId
-     *            ¶ÁĞ´Æ÷µØÖ·(0xFF¹«ÓÃµØÖ·)
-     * @return ³É¹¦ :0, Ê§°Ü:-1
-     */
-    public final int getFirmwareVersion(byte btReadId) {
-        byte btCmd = CMD.GET_FIRMWARE_VERSION;
-
-        int nResult = sendMessage(btReadId, btCmd);
-
-        return nResult;
-    }
-
-    /**
-     * ÉèÖÃ¶ÁĞ´Æ÷µØÖ·¡£
-     * 
-     * @param btReadId
-     *            Ô­¶ÁĞ´Æ÷µØÖ·(0xFF¹«ÓÃµØÖ·)
-     * @param btNewReadId
-     *            ĞÂ¶ÁĞ´Æ÷µØÖ·,È¡Öµ·¶Î§0-254(0x00¨C0xFE)
-     * @return ³É¹¦ :0, Ê§°Ü:-1
-     */
-    public final int setReaderAddress(byte btReadId, byte btNewReadId) {
-        byte btCmd = CMD.SET_READER_ADDRESS;
-        byte[] btAryData = new byte[1];
-
-        btAryData[0] = btNewReadId;
-
-        int nResult = sendMessage(btReadId, btCmd, btAryData);
-
-        return nResult;
-    }
-
-    /**
-     * ÉèÖÃ¶ÁĞ´Æ÷¹¤×÷ÌìÏß¡£
-     * 
-     * @param btReadId
-     *            ¶ÁĞ´Æ÷µØÖ·(0xFF¹«ÓÃµØÖ·)
-     * @param btWorkAntenna
-     *            ÌìÏßºÅ(0x00:ÌìÏß1, 0x01:ÌìÏß2, 0x02:ÌìÏß3, 0x03:ÌìÏß4)
-     * @return ³É¹¦ :0, Ê§°Ü:-1
-     */
-    public final int setWorkAntenna(byte btReadId, byte btWorkAntenna) {
-        byte btCmd = CMD.SET_WORK_ANTENNA;
-        byte[] btAryData = new byte[1];
-
-        btAryData[0] = btWorkAntenna;
-
-        int nResult = sendMessage(btReadId, btCmd, btAryData);
-
-        return nResult;
-    }
-
-    /**
-     * ²éÑ¯µ±Ç°ÌìÏß¹¤×÷ÌìÏß¡£
-     * 
-     * @param btReadId
-     *            ¶ÁĞ´Æ÷µØÖ·(0xFF¹«ÓÃµØÖ·)
-     * @return ³É¹¦ :0, Ê§°Ü:-1
-     */
-    public final int getWorkAntenna(byte btReadId) {
-        byte btCmd = CMD.GET_WORK_ANTENNA;
-
-        int nResult = sendMessage(btReadId, btCmd);
-
-        return nResult;
-    }
-
-    /**
-     * ÉèÖÃ¶ÁĞ´Æ÷ÉäÆµÊä³ö¹¦ÂÊ(·½Ê½1)¡£ <br>
-     * ¡ï´ËÃüÁîºÄÊ±½«³¬¹ı100mS¡£ <br>
-     * ¡ïÈç¹ûĞèÒª¶¯Ì¬¸Ä±äÉäÆµÊä³ö¹¦ÂÊ£¬ÇëÊ¹ÓÃCmdCode_set_temporary_output_powerÃüÁî£¬·ñÔò½«»áÓ°ÏìFlashµÄÊ¹ÓÃÊÙÃü¡£
-     * 
-     * @param btReadId
-     *            ¶ÁĞ´Æ÷µØÖ·(0xFF¹«ÓÃµØÖ·)
-     * @param btOutputPower
-     *            RFÊä³ö¹¦ÂÊ,È¡Öµ·¶Î§0-33(0x00¨C0x21), µ¥Î»dBm
-     * @return ³É¹¦ :0, Ê§°Ü:-1
-     */
-    public final int setOutputPower(byte btReadId, byte btOutputPower) {
-        byte btCmd = CMD.SET_OUTPUT_POWER;
-        byte[] btAryData = new byte[1];
-
-        btAryData[0] = btOutputPower;
-
-        int nResult = sendMessage(btReadId, btCmd, btAryData);
-
-        return nResult;
-    }
-
-    /**
-     * ÉèÖÃ¶ÁĞ´Æ÷ÉäÆµÊä³ö¹¦ÂÊ(·½Ê½2)¡£ <br>
-     * ¡ï´ËÃüÁîºÄÊ±½«³¬¹ı100mS¡£ <br>
-     * ¡ïÈç¹ûĞèÒª¶¯Ì¬¸Ä±äÉäÆµÊä³ö¹¦ÂÊ£¬ÇëÊ¹ÓÃCmdCode_set_temporary_output_powerÃüÁî£¬·ñÔò½«»áÓ°ÏìFlashµÄÊ¹ÓÃÊÙÃü¡£
-     * 
-     * @param btReadId
-     *            ¶ÁĞ´Æ÷µØÖ·(0xFF¹«ÓÃµØÖ·)
-     * @param btPower1
-     *            RFÌìÏß1Êä³ö¹¦ÂÊ,È¡Öµ·¶Î§0-33(0x00¨C0x21), µ¥Î»dBm
-     * @param btPower2
-     *            RFÌìÏß2Êä³ö¹¦ÂÊ,È¡Öµ·¶Î§0-33(0x00¨C0x21), µ¥Î»dBm
-     * @param btPower3
-     *            RFÌìÏß3Êä³ö¹¦ÂÊ,È¡Öµ·¶Î§0-33(0x00¨C0x21), µ¥Î»dBm
-     * @param btPower4
-     *            RFÌìÏß4Êä³ö¹¦ÂÊ,È¡Öµ·¶Î§0-33(0x00¨C0x21), µ¥Î»dBm
-     * @return ³É¹¦ :0, Ê§°Ü:-1
-     */
-    public final int setOutputPower(byte btReadId, byte btPower1,
-            byte btPower2, byte btPower3, byte btPower4) {
-        byte btCmd = CMD.SET_OUTPUT_POWER;
-        byte[] btAryData = new byte[4];
-
-        btAryData[0] = btPower1;
-        btAryData[1] = btPower2;
-        btAryData[2] = btPower3;
-        btAryData[3] = btPower4;
-
-        int nResult = sendMessage(btReadId, btCmd, btAryData);
-
-        return nResult;
-    }
-
-    /**
-     * ²éÑ¯¶ÁĞ´Æ÷µ±Ç°Êä³ö¹¦ÂÊ¡£
-     * 
-     * @param btReadId
-     *            ¶ÁĞ´Æ÷µØÖ·(0xFF¹«ÓÃµØÖ·)
-     * @return ³É¹¦ :0, Ê§°Ü:-1
-     */
-    public final int getOutputPower(byte btReadId) {
-        byte btCmd = CMD.GET_OUTPUT_POWER;
-
-        int nResult = sendMessage(btReadId, btCmd);
-
-        return nResult;
-    }
-
-    /**
-     * ÉèÖÃ¶ÁĞ´Æ÷¹¤×÷ÆµÂÊ·¶Î§(Ê¹ÓÃÏµÍ³Ä¬ÈÏµÄÆµµã)¡£
-     * 
-     * @param btReadId
-     *            ¶ÁĞ´Æ÷µØÖ·(0xFF¹«ÓÃµØÖ·)
-     * @param btRegion
-     *            ÉäÆµ¹æ·¶(0x01:FCC, 0x02:ETSI, 0x03:CHN)
-     * @param btStartRegion
-     *            ÆµÂÊÆğÊ¼µã,
-     * @param btEndRegion
-     *            ÆµÂÊ½áÊøµã,¿ÉÒÔÔÚÉäÆµ¹æ·¶µÄÆµÂÊ·¶Î§ÄÚÔÙÉèÖÃÌøÆµµÄ·¶Î§. ²ÎÊıµÄÉèÖÃ¹æÔòÎª: 1,ÆğÊ¼ÆµÂÊÓë½áÊøÆµÂÊ²»ÄÜ³¬¹ıÉäÆµ¹æ·¶µÄ·¶Î§.
-     *            2,ÆğÊ¼ÆµÂÊ±ØĞëµÍÓÚ½áÊøÆµÂÊ. 3,ÆğÊ¼ÆµÂÊµÈÓÚ½áÊøÆµÂÊÔò¶¨Æµ·¢Éä
-     * @return ³É¹¦ :0, Ê§°Ü:-1
-     */
-    public final int setFrequencyRegion(byte btReadId, byte btRegion,
-            byte btStartRegion, byte btEndRegion) {
-        byte btCmd = CMD.SET_FREQUENCY_REGION;
-        byte[] btAryData = new byte[3];
-
-        btAryData[0] = btRegion;
-        btAryData[1] = btStartRegion;
-        btAryData[2] = btEndRegion;
-
-        int nResult = sendMessage(btReadId, btCmd, btAryData);
-
-        return nResult;
-    }
-
-    /**
-     * ÉèÖÃ¶ÁĞ´Æ÷¹¤×÷ÆµÂÊ·¶Î§(ÓÃ»§×Ô¶¨ÒåÆµÆ×)¡£
-     * 
-     * @param btReadId
-     *            ¶ÁĞ´Æ÷µØÖ·(0xFF¹«ÓÃµØÖ·)
-     * @param btFreqInterval
-     *            Æµµã¼ä¸ô, Æµµã¼ä¸ô = btFreqInterval x 10KHz
-     * @param btChannelQuantity
-     *            ÆµµãÊıÁ¿, °üº¬ÆğÊ¼ÆµÂÊµÄÆµµãÊıÁ¿, 1ÎªÒÔÆğÊ¼ÆµÂÊ¶¨Æµ·¢Éä. ´Ë²ÎÊı±ØĞë´óÓÚ0
-     * @param nStartFreq
-     *            ÆğÊ¼ÆµÂÊ, µ¥Î»ÎªKHz. 16½øÖÆÊı¸ßÎ»ÔÚÇ°. ÀıÈç915000KHzÔò·¢ËÍ0x0D 0xF6 0x38
-     * @return ³É¹¦ :0, Ê§°Ü:-1
-     */
-    public final int setUserDefineFrequency(byte btReadId, byte btFreqInterval,
-            byte btChannelQuantity, int nStartFreq) {
-        byte btCmd = CMD.SET_FREQUENCY_REGION;
-        byte[] btAryFreq = new byte[3];
-        byte[] btAryData = new byte[6];
-
-        btAryFreq = Converter.getBytes(nStartFreq, Converter.BIG_ENDIAN);
-
-        btAryData[0] = 4;
-        btAryData[1] = btFreqInterval;
-        btAryData[2] = btChannelQuantity;
-        btAryData[3] = btAryFreq[2];
-        btAryData[4] = btAryFreq[1];
-        btAryData[5] = btAryFreq[0];
-
-        int nResult = sendMessage(btReadId, btCmd, btAryData);
-
-        return nResult;
-    }
-
-    /**
-     * ²éÑ¯¶ÁĞ´Æ÷¹¤×÷ÆµÂÊ·¶Î§¡£
-     * 
-     * @param btReadId
-     *            ¶ÁĞ´Æ÷µØÖ·(0xFF¹«ÓÃµØÖ·)
-     * @return ³É¹¦ :0, Ê§°Ü:-1
-     */
-    public final int getFrequencyRegion(byte btReadId) {
-        byte btCmd = CMD.GET_FREQUENCY_REGION;
-
-        int nResult = sendMessage(btReadId, btCmd);
-
-        return nResult;
-    }
-
-    /**
-     * ÉèÖÃ·äÃùÆ÷×´Ì¬¡£ <br>
-     * ¡ï¶Áµ½Ò»ÕÅ±êÇ©ºó·äÃùÆ÷ÃùÏì£¬»áÕ¼ÓÃ´óÁ¿´¦ÀíÆ÷Ê±¼ä£¬Èô´ËÑ¡Ïî´ò¿ª£¬½«»áÃ÷ÏÔÓ°Ïìµ½¶Á¶à±êÇ©(·À³åÍ»Ëã·¨)µÄĞÔÄÜ£¬´ËÑ¡ÏîÓ¦×÷Îª²âÊÔ¹¦ÄÜÑ¡ÓÃ¡£
-     * 
-     * @param btReadId
-     *            ¶ÁĞ´Æ÷µØÖ·(0xFF¹«ÓÃµØÖ·)
-     * @param btMode
-     *            ²Ù×÷±êÇ©Ê±·äÃùÆ÷×´Ì¬(0x00:°²¾², 0x01:Ã¿´ÎÅÌ´æºóÃùÏì, 0x02:Ã¿¶Áµ½Ò»ÕÅ±êÇ©ÃùÏì)
-     * @return ³É¹¦ :0, Ê§°Ü:-1
-     */
-    public final int setBeeperMode(byte btReadId, byte btMode) {
-        byte btCmd = CMD.SET_BEEPER_MODE;
-        byte[] btAryData = new byte[1];
-
-        btAryData[0] = btMode;
-
-        int nResult = sendMessage(btReadId, btCmd, btAryData);
-
-        return nResult;
-    }
-
-    /**
-     * ²éÑ¯µ±Ç°Éè±¸µÄ¹¤×÷ÎÂ¶È¡£
-     * 
-     * @param btReadId
-     *            ¶ÁĞ´Æ÷µØÖ·(0xFF¹«ÓÃµØÖ·)
-     * @return ³É¹¦ :0, Ê§°Ü:-1
-     */
-    public final int getReaderTemperature(byte btReadId) {
-        byte btCmd = CMD.GET_READER_TEMPERATURE;
-
-        int nResult = sendMessage(btReadId, btCmd);
-
-        return nResult;
-    }
-
-    /**
-     * ¶ÁÈ¡GPIOµçÆ½¡£
-     * 
-     * @param btReadId
-     *            ¶ÁĞ´Æ÷µØÖ·(0xFF¹«ÓÃµØÖ·)
-     * @return ³É¹¦ :0, Ê§°Ü:-1
-     */
-    public final int readGpioValue(byte btReadId) {
-        byte btCmd = CMD.READ_GPIO_VALUE;
-
-        int nResult = sendMessage(btReadId, btCmd);
-
-        return nResult;
-    }
-
-    /**
-     * ÉèÖÃGPIOµçÆ½¡£
-     * 
-     * @param btReadId
-     *            ¶ÁĞ´Æ÷µØÖ·(0xFF¹«ÓÃµØÖ·)
-     * @param btChooseGpio
-     *            GPIO¿ÚÑ¡Ôñ(0x03:ÉèÖÃGPIO3, 0x04:ÉèÖÃGPIO4)
-     * @param btGpioValue
-     *            GPIOÉèÖÃÖµ(0x00:µÍµçÆ½, 0x01:¸ßµçÆ½)
-     * @return ³É¹¦ :0, Ê§°Ü:-1
-     */
-    public final int writeGpioValue(byte btReadId, byte btChooseGpio,
-            byte btGpioValue) {
-        byte btCmd = CMD.WRITE_GPIO_VALUE;
-        byte[] btAryData = new byte[2];
-
-        btAryData[0] = btChooseGpio;
-        btAryData[1] = btGpioValue;
-
-        int nResult = sendMessage(btReadId, btCmd, btAryData);
-
-        return nResult;
-    }
-
-    /**
-     * ÉèÖÃÌìÏßÁ¬½Ó¼ì²âÆ÷×´Ì¬¡£
-     * 
-     * @param btReadId
-     *            ¶ÁĞ´Æ÷µØÖ·(0xFF¹«ÓÃµØÖ·)
-     * @param btDetectorStatus
-     *            ×´Ì¬(0x00:¹Ø±ÕÌìÏßÁ¬½Ó¼ì²â, ÆäËûÖµ:ÌìÏßÁ¬½Ó¼ì²âµÄÁéÃô¶È(¶Ë¿Ú»Ø²¨ËğºÄÖµ),µ¥Î»dB.
-     *            ÖµÔ½´ó¶Ô¶Ë¿ÚµÄ×è¿¹Æ¥ÅäÒªÇóÔ½¸ß
-     * @return ³É¹¦ :0, Ê§°Ü:-1
-     */
-    public final int setAntConnectionDetector(byte btReadId,
-            byte btDetectorStatus) {
-        byte btCmd = CMD.SET_ANT_CONNECTION_DETECTOR;
-        byte[] btAryData = new byte[1];
-
-        btAryData[0] = btDetectorStatus;
-
-        int nResult = sendMessage(btReadId, btCmd, btAryData);
-
-        return nResult;
-    }
-
-    /**
-     * ¶ÁÈ¡ÌìÏßÁ¬½Ó¼ì²âÆ÷×´Ì¬¡£
-     * 
-     * @param btReadId
-     *            ¶ÁĞ´Æ÷µØÖ·(0xFF¹«ÓÃµØÖ·)
-     * @return ³É¹¦ :0, Ê§°Ü:-1
-     */
-    public final int getAntConnectionDetector(byte btReadId) {
-        byte btCmd = CMD.GET_ANT_CONNECTION_DETECTOR;
-
-        int nResult = sendMessage(btReadId, btCmd);
-
-        return nResult;
-    }
-
-    /**
-     * ÉèÖÃ¶ÁĞ´Æ÷ÁÙÊ±ÉäÆµÊä³ö¹¦ÂÊ¡£ <br>
-     * ²Ù×÷³É¹¦ºóÊä³ö¹¦ÂÊÖµ½«²»»á±»±£´æÔÚÄÚ²¿µÄFlashÖĞ£¬ÖØĞÂÆô¶¯»ò¶ÏµçºóÊä³ö¹¦ÂÊ½«»Ö¸´ÖÁÄÚ²¿FlashÖĞ±£´æµÄÊä³ö¹¦ÂÊÖµ¡£´ËÃüÁîµÄ²Ù×÷ËÙ¶È·Ç³£¿ì£¬
-     * ²¢ÇÒ²»Ğ´Flash£¬´Ó¶ø²»Ó°ÏìFlashµÄÊ¹ÓÃÊÙÃü£¬ÊÊºÏĞèÒª·´¸´ÇĞ»»ÉäÆµÊä³ö¹¦ÂÊµÄÓ¦ÓÃ¡£
-     * 
-     * @param btReadId
-     *            ¶ÁĞ´Æ÷µØÖ·(0xFF¹«ÓÃµØÖ·)
-     * @param btRfPower
-     *            RFÊä³ö¹¦ÂÊ, È¡Öµ·¶Î§20-33(0x14¨C0x21), µ¥Î»dBm
-     * @return ³É¹¦ :0, Ê§°Ü:-1
-     */
-    public final int setTemporaryOutputPower(byte btReadId, byte btRfPower) {
-        byte btCmd = CMD.SET_TEMPORARY_OUTPUT_POWER;
-        byte[] btAryData = new byte[1];
-
-        btAryData[0] = btRfPower;
-
-        int nResult = sendMessage(btReadId, btCmd, btAryData);
-
-        return nResult;
-    }
-
-    /**
-     * ÉèÖÃ¶ÁĞ´Æ÷Ê¶±ğÂë¡£ <br>
-     * ²Ù×÷³É¹¦ºó12×Ö½ÚµÄ¶ÁĞ´Æ÷Ê¶±ğ×Ö·û´®½«»á±£´æÔÚÄÚ²¿µÄFlashÖĞ£¬¶Ïµçºó²»¶ªÊ§¡£
-     * 
-     * @param btReadId
-     *            ¶ÁĞ´Æ÷µØÖ·(0xFF¹«ÓÃµØÖ·)
-     * @param btAryIdentifier
-     *            12×Ö½ÚµÄ¶ÁĞ´Æ÷Ê¶±ğ×Ö·û
-     * @return ³É¹¦ :0, Ê§°Ü:-1
-     */
-    public final int setReaderIdentifier(byte btReadId, byte[] btAryIdentifier) {
-        byte btCmd = CMD.SET_READER_IDENTIFIER;
-
-        int nResult = sendMessage(btReadId, btCmd, btAryIdentifier);
-
-        return nResult;
-    }
-
-    /**
-     * ¶ÁÈ¡¶ÁĞ´Æ÷Ê¶±ğÂë¡£
-     * 
-     * @param btReadId
-     *            ¶ÁĞ´Æ÷µØÖ·(0xFF¹«ÓÃµØÖ·)
-     * @return ³É¹¦ :0, Ê§°Ü:-1
-     */
-    public final int getReaderIdentifier(byte btReadId) {
-        byte btCmd = CMD.GET_READER_IDENTIFIER;
-
-        int nResult = sendMessage(btReadId, btCmd);
-
-        return nResult;
-    }
-
-    /**
-     * ÉèÖÃÉäÆµÁ´Â·µÄÍ¨Ñ¶ËÙÂÊ¡£ <br>
-     * ²Ù×÷³É¹¦ºó¶ÁĞ´Æ÷»áÖØĞÂÆô¶¯£¬ÅäÖÃ±£´æÔÚÄÚ²¿µÄFlashÖĞ£¬¶Ïµçºó²»¶ªÊ§¡£
-     * 
-     * @param btReadId
-     *            ¶ÁĞ´Æ÷µØÖ·(0xFF¹«ÓÃµØÖ·)
-     * @param btProfile
-     *            ÉäÆµÁ´Â·µÄÍ¨Ñ¶ËÙÂÊ(0xD0:Tari 25uS,FM0 40KHz, 0xD1:Tari 25uS,Miller 4
-     *            250KHz, 0xD2:Tari 25uS,Miller 4 300KHz, 0xD3:Tari 6.25uS,FM0
-     *            400KHz)
-     * @return ³É¹¦ :0, Ê§°Ü:-1
-     */
-    public final int setRfLinkProfile(byte btReadId, byte btProfile) {
-        byte btCmd = CMD.SET_RF_LINK_PROFILE;
-        byte[] btAryData = new byte[1];
-
-        btAryData[0] = btProfile;
-
-        int nResult = sendMessage(btReadId, btCmd, btAryData);
-
-        return nResult;
-    }
-
-    /**
-     * ¶ÁÈ¡ÉäÆµÁ´Â·µÄÍ¨Ñ¶ËÙÂÊ¡£
-     * 
-     * @param btReadId
-     *            ¶ÁĞ´Æ÷µØÖ·(0xFF¹«ÓÃµØÖ·)
-     * @return ³É¹¦ :0, Ê§°Ü:-1
-     */
-    public final int getRfLinkProfile(byte btReadId) {
-        byte btCmd = CMD.GET_RF_LINK_PROFILE;
-
-        int nResult = sendMessage(btReadId, btCmd);
-
-        return nResult;
-    }
-
-    /**
-     * ²âÁ¿ÌìÏß¶Ë¿ÚµÄ»Ø²¨ËğºÄ¡£
-     * 
-     * @param btReadId
-     *            ¶ÁĞ´Æ÷µØÖ·(0xFF¹«ÓÃµØÖ·)
-     * @param btFrequency
-     *            ÆµÂÊ²ÎÊı, ÏµÍ³½«»ñÈ¡´ËÆµµãµ±Ç°¹¤×÷ÌìÏß¶Ë¿ÚµÄ»Ø²¨ËğºÄÖµ
-     * @return ³É¹¦ :0, Ê§°Ü:-1
-     */
-    public final int getRfPortReturnLoss(byte btReadId, byte btFrequency) {
-        byte btCmd = CMD.GET_RF_PORT_RETURN_LOSS;
-        byte[] btAryData = new byte[1];
-
-        btAryData[0] = btFrequency;
-
-        int nResult = sendMessage(btReadId, btCmd, btAryData);
-
-        return nResult;
-    }
-
-    /**
-     * ÅÌ´æ±êÇ©¡£ <br>
-     * ¶ÁĞ´Æ÷ÊÕµ½´ËÃüÁîºó£¬½øĞĞ¶à±êÇ©Ê¶±ğ²Ù×÷¡£±êÇ©Êı¾İ´æÈë¶ÁĞ´Æ÷»º´æÇø¡£ <br>
-     * ×¢Òâ£º <br>
-     * ¡ï½«²ÎÊıÉèÖÃ³É255(0xFF)Ê±£¬½«Æô¶¯×¨Îª¶ÁÉÙÁ¿±êÇ©Éè¼ÆµÄËã·¨¡£¶ÔÓÚÉÙÁ¿±êµÄÓ¦ÓÃÀ´Ëµ£¬Ğ§ÂÊ¸ü¸ß£¬·´Ó¦¸üÁéÃô£¬
-     * µ«´Ë²ÎÊı²»ÊÊºÏÍ¬Ê±¶ÁÈ¡´óÁ¿±êÇ©µÄÓ¦ÓÃ¡£
-     * 
-     * @param btReadId
-     *            ¶ÁĞ´Æ÷µØÖ·(0xFF¹«ÓÃµØÖ·)
-     * @param btRepeat
-     *            ÅÌ´æ¹ı³ÌÖØ¸´µÄ´ÎÊı, Repeat=0xFFÔò´ËÂÖÅÌ´æÊ±¼äÎª×î¶ÌÊ±¼ä.
-     *            Èç¹ûÉäÆµÇøÓòÄÚÖ»ÓĞÒ»ÕÅ±êÇ©,Ôò´ËÂÖµÄÅÌ´æÔ¼ºÄÊ±Îª30-50mS. Ò»°ãÔÚËÄÍ¨µÀ»úÆ÷ÉÏ¿ìËÙÂÖÑ¯¶à¸öÌìÏßÊ±Ê¹ÓÃ´Ë²ÎÊıÖµ
-     * @return ³É¹¦ :0, Ê§°Ü:-1
-     */
-    public final int inventory(byte btReadId, byte btRepeat) {
-        byte btCmd = CMD.INVENTORY;
-        byte[] btAryData = new byte[1];
-
-        btAryData[0] = btRepeat;
-
-        int nResult = sendMessage(btReadId, btCmd, btAryData);
-
-        return nResult;
-    }
-
-    /**
-     * ¶Á±êÇ©¡£ <br>
-     * ×¢Òâ£º <br>
-     * ¡ïÏàÍ¬EPCµÄ±êÇ©£¬Èô¶ÁÈ¡µÄÊı¾İ²»ÏàÍ¬£¬Ôò±»ÊÓÎª²»Í¬µÄ±êÇ©¡£
-     * 
-     * @param btReadId
-     *            ¶ÁĞ´Æ÷µØÖ·(0xFF¹«ÓÃµØÖ·)
-     * @param btMemBank
-     *            ±êÇ©´æ´¢ÇøÓò(0x00:RESERVED, 0x01:EPC, 0x02:TID, 0x03:USER)
-     * @param btWordAdd
-     *            ¶ÁÈ¡Êı¾İÊ×µØÖ·,È¡Öµ·¶Î§Çë²Î¿¼±êÇ©¹æ¸ñ
-     * @param btWordCnt
-     *            ¶ÁÈ¡Êı¾İ³¤¶È,×Ö³¤,WORD(16 bits)³¤¶È. È¡Öµ·¶Î§Çë²Î¿¼±êÇ©¹æ¸ñÊé
-     * @param btAryPassWord
-     *            ±êÇ©·ÃÎÊÃÜÂë,4×Ö½Ú
-     * @return ³É¹¦ :0, Ê§°Ü:-1
-     */
-    public final int readTag(byte btReadId, byte btMemBank, byte btWordAdd,
-            byte btWordCnt, byte[] btAryPassWord) {
-        byte btCmd = CMD.READ_TAG;
-        byte[] btAryData = null;
-        if (btAryPassWord == null || btAryPassWord.length < 4) {
-            btAryPassWord = null;
-            btAryData = new byte[3];
-        } else {
-            btAryData = new byte[3 + 4];
-        }
-
-        btAryData[0] = btMemBank;
-        btAryData[1] = btWordAdd;
-        btAryData[2] = btWordCnt;
-
-        if (btAryPassWord != null) {
-            System.arraycopy(btAryPassWord, 0, btAryData, 3,
-                    btAryPassWord.length);
-        }
-
-        int nResult = sendMessage(btReadId, btCmd, btAryData);
-
-        return nResult;
-    }
-
-    /**
-     * Ğ´±êÇ©¡£
-     * 
-     * @param btReadId
-     *            ¶ÁĞ´Æ÷µØÖ·(0xFF¹«ÓÃµØÖ·)
-     * @param btAryPassWord
-     *            ±êÇ©·ÃÎÊÃÜÂë,4×Ö½Ú
-     * @param btMemBank
-     *            ±êÇ©´æ´¢ÇøÓò(0x00:RESERVED, 0x01:EPC, 0x02:TID, 0x03:USER)
-     * @param btWordAdd
-     *            Êı¾İÊ×µØÖ·,WORD(16 bits)µØÖ·. Ğ´ÈëEPC´æ´¢ÇøÓòÒ»°ã´Ó0x02¿ªÊ¼,¸ÃÇøÓòÇ°ËÄ¸ö×Ö½Ú´æ·ÅPC+CRC
-     * @param btWordCnt
-     *            WORD(16 bits)³¤¶È,ÊıÖµÇë²Î¿¼±êÇ©¹æ¸ñ
-     * @param btAryData
-     *            Ğ´ÈëµÄÊı¾İ, btWordCnt*2 ×Ö½Ú
-     * @return ³É¹¦ :0, Ê§°Ü:-1
-     */
-    public final int writeTag(byte btReadId, byte[] btAryPassWord,
-            byte btMemBank, byte btWordAdd, byte btWordCnt, byte[] btAryData) {
-        byte btCmd = CMD.WRITE_TAG;
-        byte[] btAryBuffer = new byte[btAryData.length + 7];
-
-        System.arraycopy(btAryPassWord, 0, btAryBuffer, 0, btAryPassWord.length);
-        // btAryPassWord.CopyTo(btAryBuffer, 0);
-        btAryBuffer[4] = btMemBank;
-        btAryBuffer[5] = btWordAdd;
-        btAryBuffer[6] = btWordCnt;
-        System.arraycopy(btAryData, 0, btAryBuffer, 7, btAryData.length);
-        // btAryData.CopyTo(btAryBuffer, 7);
-
-        int nResult = sendMessage(btReadId, btCmd, btAryBuffer);
-
-        return nResult;
-    }
-
-    /**
-     * Ëø¶¨±êÇ©¡£
-     * 
-     * @param btReadId
-     *            ¶ÁĞ´Æ÷µØÖ·(0xFF¹«ÓÃµØÖ·)
-     * @param btAryPassWord
-     *            ±êÇ©·ÃÎÊÃÜÂë,4×Ö½Ú
-     * @param btMembank
-     *            ²Ù×÷µÄÊı¾İÇøÓò(0x01:User Memory, 0x02:TID Memory, 0x03:EPC Memory,
-     *            0x04:Access Password, 0x05:Kill Password)
-     * @param btLockType
-     *            Ëø²Ù×÷ÀàĞÍ(0x00:¿ª·Å, 0x01:Ëø¶¨, 0x02:ÓÀ¾Ã¿ª·Å, 0x03:ÓÀ¾ÃËø¶¨)
-     * @return ³É¹¦ :0, Ê§°Ü:-1
-     */
-    public final int lockTag(byte btReadId, byte[] btAryPassWord,
-            byte btMemBank, byte btLockType) {
-        byte btCmd = CMD.LOCK_TAG;
-        byte[] btAryData = new byte[6];
-
-        System.arraycopy(btAryPassWord, 0, btAryData, 0, btAryPassWord.length);
-        // btAryPassWord.CopyTo(btAryData, 0);
-        btAryData[4] = btMemBank;
-        btAryData[5] = btLockType;
-
-        int nResult = sendMessage(btReadId, btCmd, btAryData);
-
-        return nResult;
-    }
-
-    /**
-     * Ãğ»î±êÇ©¡£
-     * 
-     * @param btReadId
-     *            ¶ÁĞ´Æ÷µØÖ·(0xFF¹«ÓÃµØÖ·)
-     * @param btAryPassWord
-     *            ±êÇ©Ïú»ÙÃÜÂë,4×Ö½Ú
-     * @return ³É¹¦ :0, Ê§°Ü:-1
-     */
-    public final int killTag(byte btReadId, byte[] btAryPassWord) {
-        byte btCmd = CMD.KILL_TAG;
-        byte[] btAryData = new byte[4];
-
-        System.arraycopy(btAryPassWord, 0, btAryData, 0, btAryPassWord.length);
-        // btAryPassWord.CopyTo(btAryData, 0);
-
-        int nResult = sendMessage(btReadId, btCmd, btAryData);
-
-        return nResult;
-    }
-
-    /**
-     * Æ¥ÅäACCESS²Ù×÷µÄEPCºÅ(Æ¥ÅäÒ»Ö±ÓĞĞ§£¬Ö±µ½ÏÂÒ»´ÎË¢ĞÂ)¡£
-     * 
-     * @param btReadId
-     *            ¶ÁĞ´Æ÷µØÖ·(0xFF¹«ÓÃµØÖ·)
-     * @param btEpcLen
-     *            EPC³¤¶È
-     * @param btAryEpc
-     *            EPCºÅ, ÓÉEpcLen¸ö×Ö½Ú×é³É
-     * @return ³É¹¦ :0, Ê§°Ü:-1
-     */
-    public final int setAccessEpcMatch(byte btReadId, byte btEpcLen,
-            byte[] btAryEpc) {
-        byte btCmd = CMD.SET_ACCESS_EPC_MATCH;
-        int nLen = (btEpcLen & 0xFF) + 2;
-        byte[] btAryData = new byte[nLen];
-
-        btAryData[0] = 0x00;
-        btAryData[1] = btEpcLen;
-        System.arraycopy(btAryEpc, 0, btAryData, 2, btAryEpc.length);
-        // btAryEpc.CopyTo(btAryData, 2);
-
-        int nResult = sendMessage(btReadId, btCmd, btAryData);
-
-        return nResult;
-    }
-
-    /**
-     * Çå³ıEPCÆ¥Åä¡£
-     * 
-     * @param btReadId
-     *            ¶ÁĞ´Æ÷µØÖ·(0xFF¹«ÓÃµØÖ·)
-     * @return ³É¹¦ :0, Ê§°Ü:-1
-     */
-    public final int cancelAccessEpcMatch(byte btReadId) {
-        byte btCmd = CMD.SET_ACCESS_EPC_MATCH;
-        byte[] btAryData = new byte[1];
-        btAryData[0] = 0x01;
-
-        int nResult = sendMessage(btReadId, btCmd, btAryData);
-
-        return nResult;
-    }
-
-    /**
-     * ²éÑ¯Æ¥ÅäµÄEPC×´Ì¬¡£
-     * 
-     * @param btReadId
-     *            ¶ÁĞ´Æ÷µØÖ·(0xFF¹«ÓÃµØÖ·)
-     * @return ³É¹¦ :0, Ê§°Ü:-1
-     */
-    public final int getAccessEpcMatch(byte btReadId) {
-        byte btCmd = CMD.GET_ACCESS_EPC_MATCH;
-
-        int nResult = sendMessage(btReadId, btCmd);
-
-        return nResult;
-    }
-
-    /**
-     * ÅÌ´æ±êÇ©(ÊµÊ±ÉÏ´«±êÇ©Êı¾İ)¡£ <br>
-     * ×¢Òâ£º <br>
-     * ¡ïÓÉÓÚÓ²¼şÎªË«CPU¼Ü¹¹£¬Ö÷CPU¸ºÔğÂÖÑ¯±êÇ©£¬¸±CPU¸ºÔğÊı¾İ¹ÜÀí¡£ÂÖÑ¯±êÇ©ºÍ·¢ËÍÊı¾İ²¢ĞĞ£¬»¥²»Õ¼ÓÃ¶Ô·½µÄÊ±¼ä£¬
-     * Òò´Ë´®¿ÚµÄÊı¾İ´«Êä²»Ó°Ïì¶ÁĞ´Æ÷¹¤×÷µÄĞ§ÂÊ¡£
-     * 
-     * @param btReadId
-     *            ¶ÁĞ´Æ÷µØÖ·(0xFF¹«ÓÃµØÖ·)
-     * @param btRepeat
-     *            ÅÌ´æ¹ı³ÌÖØ¸´µÄ´ÎÊı,Repeat=0xFFÔò´ËÂÖÅÌ´æÊ±¼äÎª×î¶ÌÊ±¼ä.
-     *            Èç¹ûÉäÆµÇøÓòÄÚÖ»ÓĞÒ»ÕÅ±êÇ©,Ôò´ËÂÖµÄÅÌ´æÔ¼ºÄÊ±Îª30-50mS. Ò»°ãÔÚËÄÍ¨µÀ»úÆ÷ÉÏ¿ìËÙÂÖÑ¯¶à¸öÌìÏßÊ±Ê¹ÓÃ´Ë²ÎÊıÖµ
-     * @return ³É¹¦ :0, Ê§°Ü:-1
-     */
-    public final int realTimeInventory(byte btReadId, byte btRepeat) {
-        byte btCmd = CMD.REAL_TIME_INVENTORY;
-        byte[] btAryData = new byte[1];
-
-        btAryData[0] = btRepeat;
-
-        int nResult = sendMessage(btReadId, btCmd, btAryData);
-
-        return nResult;
-    }
-
-    /**
-     * ¿ìËÙÂÖÑ¯¶à¸öÌìÏßÅÌ´æ±êÇ©¡£ <br>
-     * ×¢Òâ£º <br>
-     * ¡ïÓÉÓÚÓ²¼şÎªË«CPU¼Ü¹¹£¬Ö÷CPU¸ºÔğÂÖÑ¯±êÇ©£¬¸±CPU¸ºÔğÊı¾İ¹ÜÀí¡£ÂÖÑ¯±êÇ©ºÍ·¢ËÍÊı¾İ²¢ĞĞ£¬»¥²»Õ¼ÓÃ¶Ô·½µÄÊ±¼ä£¬
-     * Òò´Ë´®¿ÚµÄÊı¾İ´«Êä²»Ó°Ïì¶ÁĞ´Æ÷¹¤×÷µÄĞ§ÂÊ¡£ <br>
-     * ¡ï´ËÃüÁî¶ÁÈ¡´óÁ¿±êÇ©Ê±£¬Ğ§ÂÊÃ»ÓĞCmdCode_real_time_inventoryÃüÁî¸ß¡£
-     * 
-     * @param btReadId
-     *            ¶ÁĞ´Æ÷µØÖ·(0xFF¹«ÓÃµØÖ·)
-     * @param btA
-     *            Ê×ÏÈÂÖÑ¯µÄÌìÏß(00¨C03), ÌìÏßºÅ´óÓÚÈıÔò±íÊ¾²»ÂÖÑ¯
-     * @param btStayA
-     *            ÌìÏßÖØ¸´ÂÖÑ¯µÄ´ÎÊı
-     * @param btB
-     *            µÚ¶ş¸öÂÖÑ¯µÄÌìÏß(00¨C03), ÌìÏßºÅ´óÓÚÈıÔò±íÊ¾²»ÂÖÑ¯
-     * @param btStayB
-     *            ÌìÏßÖØ¸´ÂÖÑ¯µÄ´ÎÊı
-     * @param btC
-     *            µÚÈı¸öÂÖÑ¯µÄÌìÏß(00¨C03), ÌìÏßºÅ´óÓÚÈıÔò±íÊ¾²»ÂÖÑ¯
-     * @param btStayC
-     *            ÌìÏßÖØ¸´ÂÖÑ¯µÄ´ÎÊı
-     * @param btD
-     *            µÚËÄ¸öÂÖÑ¯µÄÌìÏß(00¨C03), ÌìÏßºÅ´óÓÚÈıÔò±íÊ¾²»ÂÖÑ¯
-     * @param btStayD
-     *            ÌìÏßÖØ¸´ÂÖÑ¯µÄ´ÎÊı
-     * @param btInterval
-     *            ÌìÏß¼äµÄĞİÏ¢Ê±¼ä. µ¥Î»ÊÇmS. ĞİÏ¢Ê±ÎŞÉäÆµÊä³ö,¿É½µµÍ¹¦ºÄ
-     * @param btRepeat
-     *            ÖØ¸´ÒÔÉÏÌìÏßÇĞ»»Ë³Ğò´ÎÊı
-     * @return ³É¹¦ :0, Ê§°Ü:-1
-     */
-    public final int fastSwitchAntInventory(byte btReadId, byte btA,
-            byte btStayA, byte btB, byte btStayB, byte btC, byte btStayC,
-            byte btD, byte btStayD, byte btInterval, byte btRepeat) {
-
-        byte btCmd = CMD.FAST_SWITCH_ANT_INVENTORY;
-        byte[] btAryData = new byte[10];
-
-        btAryData[0] = btA;
-        btAryData[1] = btStayA;
-        btAryData[2] = btB;
-        btAryData[3] = btStayB;
-        btAryData[4] = btC;
-        btAryData[5] = btStayC;
-        btAryData[6] = btD;
-        btAryData[7] = btStayD;
-        btAryData[8] = btInterval;
-        btAryData[9] = btRepeat;
-
-        int nResult = sendMessage(btReadId, btCmd, btAryData);
-
-        return nResult;
-    }
-
-    /**
-     * ×Ô¶¨ÒåsessionºÍtargetÅÌ´æ¡£
-     * 
-     * @param btReadId
-     *            ¶ÁĞ´Æ÷µØÖ·(0xFF¹«ÓÃµØÖ·)
-     * @param btSession
-     *            Ö¸¶¨ÅÌ´æµÄsession
-     * @param btTarget
-     *            Ö¸¶¨ÅÌ´æµÄInventoried Flag(0x00:A, 0x01:B)
-     * @param btRepeat
-     *            ÅÌ´æ¹ı³ÌÖØ¸´µÄ´ÎÊı
-     * @return ³É¹¦ :0, Ê§°Ü:-1
-     */
-    public final int customizedSessionTargetInventory(byte btReadId,
-            byte btSession, byte btTarget, byte btRepeat) {
-
-        byte btCmd = CMD.CUSTOMIZED_SESSION_TARGET_INVENTORY;
-        byte[] btAryData = new byte[3];
-
-        btAryData[0] = btSession;
-        btAryData[1] = btTarget;
-        btAryData[2] = btRepeat;
-
-        int nResult = sendMessage(btReadId, btCmd, btAryData);
-
-        return nResult;
-    }
-
-    /**
-     * ÉèÖÃMonza±êÇ©¿ìËÙ¶ÁTID¡£ <br>
-     * ×¢Òâ£º <br>
-     * ¡ï´Ë¹¦ÄÜ½ö¶ÔImpinj Monza ±êÇ©µÄ²¿·ÖĞÍºÅÓĞĞ§¡£ <br>
-     * ¡ï´Ë¹¦ÄÜÔÚÊ¶±ğEPCµÄÍ¬Ê±Ê¶±ğTID£¬Òò´Ë´ó´óÌá¸ßÁË¶ÁTIDµÄĞ§ÂÊ¡£ <br>
-     * ¡ï´ò¿ª´Ë¹¦ÄÜºó£¬ÌØ¶¨ĞÍºÅµÄ±êÇ©»áÔÚÅÌ´æµÄ¹ı³ÌÖĞ½«TID´ò°üµ½EPCÖĞ¡£Òò´Ë£¬±êÇ©µÄPC»á±»ĞŞ¸Ä£¬Ô­À´µÄPC+EPC±äÎª£ºĞŞ¸ÄºóµÄPC+EPC+(
-     * EPCµÄCRC)+TID¡£ <br>
-     * ¡ïÈç¹ûÔÚÊ¶±ğTIDµÄ¹ı³ÌÖĞ³öÏÖ´íÎó£¬ÔòÉÏ´«Ô­À´µÄPC+EPC¡£ <br>
-     * ¡ïÈç²»ĞèÒª´Ë¹¦ÄÜÇë½«Æä¹Ø±Õ£¬±ÜÃâ²»±ØÒªµÄÊ±¼äÏûºÄ¡£ <br>
-     * ¡ï´ËÃüÁî²»±£´æÖÁÄÚ²¿µÄFlashÖĞ£¬ÖØÆôºó½«»Ø¸´ÖÁFlash±£´æµÄÖµ¡£
-     * 
-     * @param btReadId
-     *            ¶ÁĞ´Æ÷µØÖ·(0xFF¹«ÓÃµØÖ·)
-     * @param blnOpen
-     *            ÊÇ·ñ´ò¿ªFastTID
-     * @param blnSave
-     *            ÊÇ·ñ±£´æÖÁÄÚ²¿FLASH
-     * @return ³É¹¦ :0, Ê§°Ü:-1
-     */
-    public final int setImpinjFastTid(byte btReadId, boolean blnOpen,
-            boolean blnSave) {
-
-        byte btCmd = (blnSave ? CMD.SET_AND_SAVE_IMPINJ_FAST_TID
-                : CMD.SET_IMPINJ_FAST_TID);
-        byte[] btAryData = new byte[1];
-
-        btAryData[0] = (byte) (blnOpen ? 0x8D : 0x00);
-
-        int nResult = sendMessage(btReadId, btCmd, btAryData);
-
-        return nResult;
-    }
-
-    /**
-     * ²éÑ¯µ±Ç°µÄ¿ìËÙTIDÉèÖÃ¡£
-     * 
-     * @param btReadId
-     *            ¶ÁĞ´Æ÷µØÖ·(0xFF¹«ÓÃµØÖ·)
-     * @return ³É¹¦ :0, Ê§°Ü:-1
-     */
-    public final int getImpinjFastTid(byte btReadId) {
-        byte btCmd = CMD.GET_IMPINJ_FAST_TID;
-
-        int nResult = sendMessage(btReadId, btCmd);
-
-        return nResult;
-    }
-
-    /**
-     * ÅÌ´æ18000-6B±êÇ©¡£
-     * 
-     * @param btReadId
-     *            ¶ÁĞ´Æ÷µØÖ·(0xFF¹«ÓÃµØÖ·)
-     * @return ³É¹¦ :0, Ê§°Ü:-1
-     */
-    public final int iso180006BInventory(byte btReadId) {
-        byte btCmd = CMD.ISO18000_6B_INVENTORY;
-
-        int nResult = sendMessage(btReadId, btCmd);
-
-        return nResult;
-    }
-
-    /**
-     * ¶Á18000-6B±êÇ©¡£
-     * 
-     * @param btReadId
-     *            ¶ÁĞ´Æ÷µØÖ·(0xFF¹«ÓÃµØÖ·)
-     * @param btAryUID
-     *            ±»²Ù×÷±êÇ©µÄUID, 8 bytes
-     * @param btWordAdd
-     *            Òª¶ÁÈ¡µÄÊı¾İÊ×µØÖ·
-     * @param btWordCnt
-     *            Òª¶ÁÈ¡µÄÊı¾İ³¤¶È
-     * @return ³É¹¦ :0, Ê§°Ü:-1
-     */
-    public final int iso180006BReadTag(byte btReadId, byte[] btAryUID,
-            byte btWordAdd, byte btWordCnt) {
-        byte btCmd = CMD.ISO18000_6B_READ_TAG;
-        int nLen = btAryUID.length + 2;
-        byte[] btAryData = new byte[nLen];
-
-        System.arraycopy(btAryUID, 0, btAryData, 0, btAryUID.length);
-        // btAryUID.CopyTo(btAryData, 0);
-        btAryData[nLen - 2] = btWordAdd;
-        btAryData[nLen - 1] = btWordCnt;
-
-        int nResult = sendMessage(btReadId, btCmd, btAryData);
-
-        return nResult;
-    }
-
-    /**
-     * Ğ´18000-6B±êÇ©¡£
-     * 
-     * @param btReadId
-     *            ¶ÁĞ´Æ÷µØÖ·(0xFF¹«ÓÃµØÖ·)
-     * @param btAryUID
-     *            ±»²Ù×÷±êÇ©µÄUID, 8 bytes
-     * @param btWordAdd
-     *            Ğ´ÈëÊı¾İµÄÊ×µØÖ·
-     * @param btWordCnt
-     *            Ğ´ÈëÊı¾İµÄ³¤¶È
-     * @param btAryBuffer
-     *            Ğ´ÈëµÄÊı¾İ
-     * @return ³É¹¦ :0, Ê§°Ü:-1
-     */
-    public final int iso180006BWriteTag(byte btReadId, byte[] btAryUID,
-            byte btWordAdd, byte btWordCnt, byte[] btAryBuffer) {
-        byte btCmd = CMD.ISO18000_6B_WRITE_TAG;
-        int nLen = btAryUID.length + 2 + btAryBuffer.length;
-        byte[] btAryData = new byte[nLen];
-
-        System.arraycopy(btAryUID, 0, btAryData, 0, btAryUID.length);
-        // btAryUID.CopyTo(btAryData, 0);
-        btAryData[btAryUID.length] = btWordAdd;
-        btAryData[btAryUID.length + 1] = btWordCnt;
-        System.arraycopy(btAryBuffer, 0, btAryData, btAryUID.length + 2,
-                btAryBuffer.length);
-        // btAryBuffer.CopyTo(btAryData, btAryUID.length + 2);
-
-        int nResult = sendMessage(btReadId, btCmd, btAryData);
-
-        return nResult;
-    }
-
-    /**
-     * Ëø¶¨18000-6B±êÇ©¡£
-     * 
-     * @param btReadId
-     *            ¶ÁĞ´Æ÷µØÖ·(0xFF¹«ÓÃµØÖ·)
-     * @param btAryUID
-     *            ±»²Ù×÷±êÇ©µÄUID, 8 bytes
-     * @param btWordAdd
-     *            ±»Ëø¶¨µÄµØÖ·
-     * @return ³É¹¦ :0, Ê§°Ü:-1
-     */
-    public final int iso180006BLockTag(byte btReadId, byte[] btAryUID,
-            byte btWordAdd) {
-        byte btCmd = CMD.ISO18000_6B_LOCK_TAG;
-        int nLen = btAryUID.length + 1;
-        byte[] btAryData = new byte[nLen];
-
-        System.arraycopy(btAryUID, 0, btAryData, 0, btAryUID.length);
-        // btAryUID.CopyTo(btAryData, 0);
-        btAryData[nLen - 1] = btWordAdd;
-
-        int nResult = sendMessage(btReadId, btCmd, btAryData);
-
-        return nResult;
-    }
-
-    /**
-     * ²éÑ¯18000-6B±êÇ©¡£
-     * 
-     * @param btReadId
-     *            ¶ÁĞ´Æ÷µØÖ·(0xFF¹«ÓÃµØÖ·)
-     * @param btAryUID
-     *            ±»²Ù×÷±êÇ©µÄUID, 8 bytes
-     * @param btWordAdd
-     *            Òª²éÑ¯µÄµØÖ·
-     * @return ³É¹¦ :0, Ê§°Ü:-1
-     */
-    public final int iso180006BQueryLockTag(byte btReadId, byte[] btAryUID,
-            byte btWordAdd) {
-        byte btCmd = CMD.ISO18000_6B_QUERY_LOCK_TAG;
-        int nLen = btAryUID.length + 1;
-        byte[] btAryData = new byte[nLen];
-
-        System.arraycopy(btAryUID, 0, btAryData, 0, btAryUID.length);
-        // btAryUID.CopyTo(btAryData, 0);
-        btAryData[nLen - 1] = btWordAdd;
-
-        int nResult = sendMessage(btReadId, btCmd, btAryData);
-
-        return nResult;
-    }
-
-    /**
-     * ÌáÈ¡±êÇ©Êı¾İ±£Áô»º´æ±¸·İ¡£ <br>
-     * ×¢Òâ£º <br>
-     * ¡ïÃüÁîÍê³Éºó£¬»º´æÖĞµÄÊı¾İ²¢²»¶ªÊ§£¬¿ÉÒÔ¶à´ÎÌáÈ¡¡£ <br>
-     * ¡ïÈôÔÙ´ÎÔËĞĞCmdCode_inventory ÃüÁî£¬ÔòÅÌ´æµ½µÄ±êÇ©½«ÀÛ¼Æ´æÈë»º´æ¡£ <br>
-     * ¡ïÈôÔÙ´ÎÔËĞĞÆäËûµÄ18000-6CÃüÁî£¬»º´æÖĞµÄÊı¾İ½«±»Çå¿Õ¡£
-     * 
-     * @param btReadId
-     *            ¶ÁĞ´Æ÷µØÖ·(0xFF¹«ÓÃµØÖ·)
-     * @return ³É¹¦ :0, Ê§°Ü:-1
-     */
-    public final int getInventoryBuffer(byte btReadId) {
-        byte btCmd = CMD.GET_INVENTORY_BUFFER;
-
-        int nResult = sendMessage(btReadId, btCmd);
-
-        return nResult;
-    }
-
-    /**
-     * ÌáÈ¡±êÇ©Êı¾İ²¢É¾³ı»º´æ¡£
-     * 
-     * @param btReadId
-     *            ¶ÁĞ´Æ÷µØÖ·(0xFF¹«ÓÃµØÖ·)
-     * @return ³É¹¦ :0, Ê§°Ü:-1
-     */
-    public final int getAndResetInventoryBuffer(byte btReadId) {
-        byte btCmd = CMD.GET_AND_RESET_INVENTORY_BUFFER;
-
-        int nResult = sendMessage(btReadId, btCmd);
-
-        return nResult;
-    }
-
-    /**
-     * ²éÑ¯»º´æÖĞÒÑ¶Á±êÇ©¸öÊı¡£
-     * 
-     * @param btReadId
-     *            ¶ÁĞ´Æ÷µØÖ·(0xFF¹«ÓÃµØÖ·)
-     * @return ³É¹¦ :0, Ê§°Ü:-1
-     */
-    public final int getInventoryBufferTagCount(byte btReadId) {
-        byte btCmd = CMD.GET_INVENTORY_BUFFER_TAG_COUNT;
-
-        int nResult = sendMessage(btReadId, btCmd);
-
-        return nResult;
-    }
-
-    /**
-     * Çå¿Õ±êÇ©Êı¾İ»º´æ¡£
-     * 
-     * @param btReadId
-     *            ¶ÁĞ´Æ÷µØÖ·(0xFF¹«ÓÃµØÖ·)
-     * @return ³É¹¦ :0, Ê§°Ü:-1
-     */
-    public final int resetInventoryBuffer(byte btReadId) {
-        byte btCmd = CMD.RESET_INVENTORY_BUFFER;
-
-        int nResult = sendMessage(btReadId, btCmd);
-
-        return nResult;
-    }
-
-    /**
-     * ·¢ËÍÂãÊı¾İ¡£
-     * 
-     * @param btReadId
-     *            ¶ÁĞ´Æ÷µØÖ·(0xFF¹«ÓÃµØÖ·)
-     * @return ³É¹¦ :0, Ê§°Ü:-1
-     */
-    public final int sendBuffer(byte[] btAryBuf) {
-
+    public final int sendFixCMD() {
+        byte[] btAryBuf = new byte[8];
+        btAryBuf[0] = (byte) 0xAA;
+        btAryBuf[1] = (byte) 0xAA;
+        btAryBuf[2] = (byte) 0xAA;
+        btAryBuf[3] = (byte) 0x01;
+        btAryBuf[4] = CMD.FIX;
+        btAryBuf[5] = (byte) 0x00;
+        btAryBuf[6] = (byte) 0x00;
+        btAryBuf[7] = (byte) 0x0C;
         int nResult = sendMessage(btAryBuf);
-
         return nResult;
+    }
+
+    public final int sendModeCMD() {
+        byte[] btAryBuf = new byte[8];
+        btAryBuf[0] = (byte) 0xAA;
+        btAryBuf[1] = (byte) 0xAA;
+        btAryBuf[2] = (byte) 0xAA;
+        btAryBuf[3] = (byte) 0x01;
+        btAryBuf[4] = CMD.INFINIX;
+        btAryBuf[5] = (byte) 0x00;
+        btAryBuf[6] = (byte) 0x00;
+        btAryBuf[7] = (byte) 0x1B;
+        int nResult = sendMessage(btAryBuf);
+        return nResult;
+    }
+    /**
+     * send response
+     * 
+     * @param btAryBuf
+     *            to send
+     * @return success 0, fail -1
+     */
+    public final int sendCMDResponse(byte[] cmd) {
+        if (cmd[0] == CMD.BEG) {
+            byte[] btAryBuf = new byte[8];
+            btAryBuf[0] = CMD.BEG;
+            btAryBuf[1] = cmd[1];
+            btAryBuf[2] = 0x00;
+            btAryBuf[3] = 0x00;
+            btAryBuf[4] = 0x00;
+            btAryBuf[5] = CMD.RESPONSE;
+            btAryBuf[6] = btAryBuf[5];// CHECK
+            btAryBuf[7] = CMD.END;
+            int nResult = sendMessage(btAryBuf);
+            return nResult;
+        }
+        return 0;
     }
 }

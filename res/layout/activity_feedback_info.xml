@@ -21,27 +21,13 @@
         android:textColor="@color/def_text_color"
         android:textSize="@dimen/info_left_title_size" />
 
-    <RelativeLayout
+    <TextView
+        android:id="@+id/cur_credit_info"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_weight="1" >
-
-        <TextView
-            android:id="@+id/cur_credit_info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/def_text_color"
-            android:textSize="@dimen/info_right_title_size" />
-
-        <TextView
-            android:id="@+id/ava_credit_info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/cur_credit_info"
-            android:layout_marginTop="@dimen/info_right_title_margin"
-            android:textColor="@color/def_text_color"
-            android:textSize="@dimen/info_right_title_size" />
-    </RelativeLayout>
+        android:layout_weight="1"
+        android:textColor="@color/def_text_color"
+        android:textSize="@dimen/info_right_title_size" />
 
 </LinearLayout>

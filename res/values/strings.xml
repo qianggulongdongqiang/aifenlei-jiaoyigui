@@ -1,31 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
-    <string name="app_name">爱分类 爱回收</string>
-    <string name="yes">是</string>
-    <string name="no">否</string>
-    <string name="ok">确定</string>
-    <string name="cancel">取消</string>
-    <string name="goon">继续</string>
-    <string name="alert_diag_title">提示</string>
-    <string name="are_you_sure_to_exit">确认要退出吗？</string>
+    <string name="app_name">AHS交易柜</string>
+    <string name="secret">"输入调试密码"</string>
+    <string name="yes">"是"</string>
+    <string name="no">"否"</string>
+    <string name="delete">"回删"</string>
+    <string name="ok">"确定"</string>
+    <string name="cancel">"取消"</string>
+    <string name="goon">"继续"</string>
+    <string name="done">"完成"</string>
+    <string name="alert_diag_title">"提示"</string>
+    <string name="network_exception">"网络异常"</string>
+    <string name="network_exception1">"二维码创建失败"</string>
+    <string name="network_exception2">"登录失败"</string>
+    <string name="are_you_sure_to_exit">"确认要退出吗？"</string>
     <string name="connect_rs232">"串口连接"</string>
     <string name="connect">"立即连接"</string>
-    <string name="com_port">串口号:</string>
-    <string name="baud_rate">波特率:</string>
+    <string name="com_port">"串口号:"</string>
+    <string name="com_port1">"串口号1"</string>
+    <string name="com_port2">"串口号2"</string>
+    <string name="baud_rate">"波特率:"</string>
     <string name="rs232_error">"串口参数设置错误"</string>
-    <string name="save">保存</string>
-    <string name="unsave">不保存</string>
-    <string name="open">打开</string>
-    <string name="close">关闭</string>
-    <string name="set">设置</string>
-    <string name="get">读取</string>
-    <string name="name1">周先生</string>
-    <string name="name2">陶先生</string>
-    <string name="name3">豪先生</string>
-    <string name="name4">路先生</string>
-    <string name="name5">张先生</string>
-    <string name="name6">李先生</string>
+    <string name="save">"保存"</string>
+    <string name="unsave">"不保存"</string>
+    <string name="open">"打开"</string>
+    <string name="close">"关闭"</string>
+    <string name="set">"设置"</string>
+    <string name="get">"读取"</string>
+
+    <!--  login -->
+    <string name="home_left">"免积分公益投递"</string>
+    <string name="home_right">"积分投递"</string>
+    <string name="title_des1">"请扫描二维码进入公众号"</string>
+    <string name="title_des2">"我们将为您提供更专业的服务！"</string>
+    <string name="title_des3">"客服电话：021&#8211;65101091"</string>
+    <string name="title_des4">"本机编号：<xliff:g>%1$s</xliff:g>"</string>
+    <string name="login_ok">"确认"</string>
+    <string name="login_back">"返回"</string>
+    <string name="login_time_start">"倒计时"</string>
+    <string name="login_time_end">"秒"</string>
+
+    <string name="login_qr_title1">"扫描二维码进入公众号"</string>
+    <string name="login_qr_title2">"公众号账户"</string>
+    <string name="login_qr_title3">"请确认账号是否正确"</string>
+    
+    <string name="login_rfid_title1">"将RFID钥匙链靠近识别区"</string>
+    <string name="login_rfid_title2">"RFID感应账户"</string>
+    <string name="login_rfid_title3">"将RFID钥匙链靠近识别区"</string>
+    <string name="login_rfid_title3_msg">"请确认身份识别是否正确"</string>
+
+    <string name="login_phone_title1">"手机账户"</string>
+    <string name="login_rfid_tip">"我有RFID卡识别"</string>
+    <string name="login_qr_tip">"切换扫描登录"</string>
+    <string name="login_phone_tip">"或选择手机号登录"</string>
+    <string name="login_phone_input">"请输入手机号"</string>
+    <string name="login_phone_input_error">"手机号不正确"</string>
+    <string name="login_other_tip">"切换其他登录方式"</string>
+    <string name="login_ensure">"确认登录"</string>
+    <string name="login_cancel">"切换账户"</string>
+    <string name="login_resume">"重新识别"</string>
+
+    <!-- open -->
+    <string name="status_bar_start">"登录账户"</string>
+    <string name="status_bar_guest">"公益投递"</string>
+    <string name="status_bar_work1">"瓶子投递"</string>
+    <string name="status_bar_work2">"称重计算"</string>
+    <string name="status_bar_work3">"打印贴纸"</string>
+    <string name="status_bar_end">"完成投递"</string>
+    <string name="open_title1">"投递口已经打开"</string>
+    <string name="open_title2">"请输入投递袋装数量"</string>
+    <string name="open_title3">"正在打印贴纸…"</string>
+    <string name="open_msg1">"请依次将瓶子投入，小心夹手"</string>
+    <string name="open_msg2">"请将袋子投入，小心夹手"</string>
+    <string name="open_msg3">"袋数"</string>
+    <string name="open_result_s1">"已投递 "</string>
+    <string name="open_result_e1">" 个瓶子"</string>
+    <string name="open_result_s2">"已投递袋子 "</string>
+    <string name="open_result_e2">" kg"</string>
+    <string name="open_finish">"投递完成"</string>
+    <string name="package_number">"袋数"</string>
+
+    <string name="history_list">"投递列表"</string>
+    <string name="history_total">"合计积分"</string>
+    <string name="type_bottle1">"金属瓶"</string>
+    <string name="type_bottle2">"塑料瓶"</string>
+    <string name="type_bottle3">"玻璃瓶"</string>
+    <string name="type_package1">"纸板箱"</string>
+    <string name="type_package2">"袋装回收物"</string>
+
+    <string name="history_unit">"（单价：<xliff:g>%1$7.2f</xliff:g>积分/kg）"</string>
+    <string name="history_weight">"<xliff:g>%1$7.2f</xliff:g>kg"</string>
+    <string name="history_credit">"<xliff:g>%1$d</xliff:g>积分"</string>
+
+    <string name="result_open">"本次投递已完成"</string>
+    <string name="result_account">"投递用户："</string>
+    <string name="result_ava_point">"本次积分："</string>
+    <string name="result_all_point">"账户积分："</string>
+    <string name="result_tip0">"感谢您为分类回收做出贡献"</string>
+    <string name="result_tip">"感谢您为分类回收做出贡献\n可在服务点凭借积分兑换相应礼品"</string>
+    <string name="guest_tip">"您选择参与—免积分公益投递\n参与免积分公益投递，您的投递结果将不作为积分存入对应账户。
+点击&quot;确认&quot;，继续投递；\n点击&quot;返回&quot;，返回选择&quot;积分投递&quot;"</string>
+
+    <string name="print_msg">"请将贴纸平整铁道投递袋外侧"</string>
+    <string name="add_order_error">"还没有检测到重量哦，\n先投递再点完成按钮"</string>
+    <string name="machine_exception">"机器已满、请等待工作人员清运"</string>
+    <string name="print_done">"已贴好"</string>
 
     <!-- add -->
     <string name="actionbar_app_name">爱分类 爱回收</string>
@@ -37,14 +117,14 @@
     <string name="collect_res">回收资源</string>
     <string name="weight_des1">当前重量</string>
     <string name="weight_des2">当前件数</string>
-    <string name="weight_tip1">(10积分/kg)</string>
-    <string name="weight_tip2">(10积分/件)</string>
+    <string name="weight_tip1">(<xliff:g>%1$5.1f</xliff:g>积分/kg)</string>
+    <string name="weight_tip2">(<xliff:g>%1$5.1f</xliff:g>积分/件)</string>
     <string name="weight_credit">积分</string>
     <string name="weight_msg"><xliff:g>%1$2s</xliff:g>kg</string>
-    <string name="account_detail">你好，<xliff:g>%1$2s</xliff:g>！</string>
+    <string name="account_detail">您好，<xliff:g>%1$2s</xliff:g>！</string>
     <string name="account_detail2">\n感谢为资源回收做出贡献</string>
+    <string name="account_detail3">您好</string>
     <string name="credit_detail">当前积分  <xliff:g>%1$2s</xliff:g></string>
-    <string name="credit_detail2">可用积分  <xliff:g>%1$2s</xliff:g></string>
     <string name="empty">ImageView</string>
 
     <string name="dialog_delete">"删除"</string>
@@ -57,8 +137,29 @@
     <string name="dialog_credit_income">"入账积分:"</string>
     <string name="dialog_exchange_need">"需要积分:"</string>
     <string name="dialog_exchange_avaiable">"可用积分:"</string>
+    <string name="dialog_fail_credit">"待入账积分:"</string>
+
+    <string name="dialog_time">"时间:"</string>
+    <string name="dialog_account">"账户:"</string>
+    <string name="dialog_success_before">"原始积分:"</string>
+    <string name="dialog_success_income">"入账积分:"</string>
+    <string name="dialog_success_after">"当前积分:"</string>
+    <string name="dialog_success_goto1">"继续交易"</string>
+    <string name="dialog_success_goto2">"积分兑换"</string>
+    <string name="dialog_result_return">"返回首页"</string>
+    <string name="dialog_fail_goto1">"返回交易"</string>
+    <string name="dialog_fail_goto2">"重新提交"</string>
+    <string name="dialog_success_welcome">"恭喜您，交易成功！"</string>
+    <string name="dialog_fail_welcome">"抱歉，交易失败！"</string>
+    <string name="dialog_welcome_title">"欢迎光临："</string>
+    <string name="dialog_welcome_msg">"请确认身份识别是否正确"</string>
+    <string name="dialog_welcome_list_title">"当前可识别用户："</string>
+    <string name="dialog_welcome_list_msg">"请选择正确用户身份并确认"</string>
 
     <string name="item_count">x<xliff:g>%1$2s</xliff:g></string>
     <string name="item_credit">"0"</string>
+    <string name="add_sub_num">"1"</string>
     <string name="rs232_lost_connect">"连接已断开"</string>
+    <string name="feature_not_online">"暂未上线，敬请期待"</string>    
+    <string name="msg_camera_framework_bug">"请设置里开启应用的相机权限"</string>
 </resources>

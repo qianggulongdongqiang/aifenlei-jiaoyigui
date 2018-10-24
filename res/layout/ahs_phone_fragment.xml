@@ -1,0 +1,81 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/ahs_fragment_bg"
+    android:orientation="vertical"
+    android:weightSum="11" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:gravity="center"
+        android:orientation="vertical" >
+
+        <EditText
+            android:id="@+id/input"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/edit_text_height"
+            android:layout_marginStart="@dimen/edit_text_h_margin"
+            android:layout_marginEnd="@dimen/edit_text_h_margin"
+            android:background="@drawable/input_bar2"
+            android:gravity="center"
+            android:ellipsize="middle"
+            android:hint="@string/login_phone_input"
+            android:paddingStart="@dimen/list_text_margin"
+            android:paddingEnd="@dimen/list_text_margin"
+            android:textColor="@color/login_title"
+            android:textColorHint="@color/login_input_hint"
+            android:textCursorDrawable="@drawable/ahs_cursor_color"
+            android:textSize="@dimen/phone_input_hint" />
+
+        <TextView
+            android:id="@+id/input_tips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/login_phone_input_error"
+            android:visibility="invisible"
+            android:textColor="@color/input_error_color"
+            android:textSize="@dimen/phone_tips_size" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="6"
+        android:background="@color/login_button_disable"
+        android:gravity="center" >
+
+        <com.arcfun.uhfclient.view.NumKeyBoard
+            android:id="@+id/input_keyboard"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/keyboard_v_margin"
+            android:layout_marginEnd="@dimen/keyboard_h_margin"
+            android:layout_marginStart="@dimen/keyboard_h_margin"
+            android:layout_marginTop="@dimen/keyboard_v_margin" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/switch_rfid_phone"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:gravity="center"
+        android:clickable="true"
+        android:descendantFocusability="beforeDescendants"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/txt_rfid_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/fragement_tips_height"
+            android:drawableEnd="@drawable/icon_enter"
+            android:drawablePadding="@dimen/fragement_tips_padding"
+            android:gravity="center"
+            android:text="@string/login_other_tip"
+            android:textColor="@color/dialog_default"
+            android:textSize="@dimen/fragment_tips_size" />
+    </LinearLayout>
+
+</LinearLayout>

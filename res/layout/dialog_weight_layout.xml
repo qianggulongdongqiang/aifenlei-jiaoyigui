@@ -12,7 +12,7 @@
         android:orientation="vertical"
         android:paddingTop="@dimen/dialog_top_margin" >
 
-        <include layout="@layout/dialog_base" />
+        <include layout="@layout/dialog_weight_base" />
 
         <View
             android:layout_width="match_parent"

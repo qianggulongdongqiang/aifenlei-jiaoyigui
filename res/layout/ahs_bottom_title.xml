@@ -1,0 +1,70 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/ahs_rectangle_title_bg" >
+
+    <ImageView
+        android:id="@+id/title_barcode"
+        android:layout_width="@dimen/login_barcode_size"
+        android:layout_height="@dimen/login_barcode_size"
+        android:layout_alignParentLeft="true"
+        android:layout_centerInParent="true"
+        android:layout_margin="@dimen/login_barcode_margin"
+        android:background="@drawable/barcode"
+        android:contentDescription="@string/app_name" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        android:gravity="center_vertical"
+        android:layout_toRightOf="@id/title_barcode"
+        android:orientation="vertical" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/title_des1"
+            android:textColor="@color/action_bar_text_color"
+            android:textSize="@dimen/bottom_title_size"
+            android:typeface="sans" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/login_title_margin"
+            android:text="@string/title_des2"
+            android:textColor="@color/action_bar_text_color"
+            android:textSize="@dimen/bottom_title_size"
+            android:typeface="sans" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/login_title_margin"
+            android:text="@string/title_des3"
+            android:textColor="@color/action_bar_text_color"
+            android:textSize="@dimen/bottom_title_size"
+            android:typeface="sans" />
+
+        <TextView
+            android:id="@+id/barcode_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/login_title_margin"
+            android:text="@string/title_des4"
+            android:textColor="@color/action_bar_text_color"
+            android:textSize="@dimen/bottom_title_size"
+            android:typeface="sans" />
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="@dimen/login_title_width"
+        android:layout_height="@dimen/login_title_height"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/login_barcode_margin"
+        android:background="@drawable/icon_logo"
+        android:contentDescription="@string/app_name" />
+
+</RelativeLayout>

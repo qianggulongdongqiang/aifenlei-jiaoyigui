@@ -5,80 +5,64 @@ import java.io.OutputStream;
 
 import android.content.Context;
 
-import com.reader.base.MessageTran;
+import com.arcfun.uhfclient.utils.Constancts;
 import com.reader.base.ReaderBase;
-import com.user.box.utils.Utils;
 
 public class ReaderHelper {
     private ReaderBase mReader;
-    private static Context mContext;
 
     private static ReaderHelper mReaderHelper1, mReaderHelper2;
 
     private Listener mListener = null;
+    private int mType;
 
     public interface Listener {
-        public void onLostConnect();
-        public void onRawInfo(byte[] btAryReceiveData);//debug
-        public void onEPCInfo(byte[] btAryReceiveData);//epc
-        public void onWeightInfo(byte[] btAryReceiveData);//weight
+        public void onLostConnect(int type);
+
+        public void onRawInfo(int type, byte[] btData);// raw
+
+        public void onDEVInfo(int type, byte[] btData);// dev
+
+        public void onEPCInfo(int type, byte[] btData);// epc
     }
 
     public void setListener(Listener listener) {
         mListener = listener;
     }
 
-    public ReaderHelper() {}
+    public ReaderHelper() {
+    }
 
     public ReaderHelper(Listener listener) {
         mListener = listener;
     }
 
-    /**
-     * 设置Context。
-     * 
-     * @param context 设置Context
-     * @throws Exception 当Context为空时会抛出错误
-     */
     public static void setContext(Context context) throws Exception {
-        mContext = context;
         mReaderHelper1 = new ReaderHelper();
         mReaderHelper2 = new ReaderHelper();
     }
 
-    /**
-     * 返回helper中全局的读写器帮助类。
-     * 
-     * @return 返回helper中全局的读写器帮助类
-     * @throws Exception
-     *             当helper中全局的读写器帮助类为空时会抛出错误
-     */
     public static ReaderHelper getDefaultHelper() throws Exception {
-        if (mReaderHelper1 == null || mContext == null)
-            throw new NullPointerException("mReaderHelper Or mContext is Null!");
-        return mReaderHelper1;
-    }
-    public static ReaderHelper getEpcHelper() throws Exception {
-        if (mReaderHelper1 == null || mContext == null)
+        if (mReaderHelper1 == null)
             throw new NullPointerException("mReaderHelper Or mContext is Null!");
         return mReaderHelper1;
     }
 
-    public static ReaderHelper getInfoHelper() throws Exception {
-        if (mReaderHelper2 == null || mContext == null)
+    public static ReaderHelper getDevHelper() throws Exception {
+        if (mReaderHelper1 == null)
+            throw new NullPointerException("mReaderHelper Or mContext is Null!");
+        return mReaderHelper1;
+    }
+
+    public static ReaderHelper getEpcHelper() throws Exception {
+        if (mReaderHelper2 == null)
             throw new NullPointerException("mReaderHelper Or mContext is Null!");
         return mReaderHelper2;
     }
-    /**
-     * 设置并返回helper中全局的读写器基类。
-     * 
-     * @param in 输入流
-     * @param out 输出流
-     * @return helper中全局的读写器基类
-     * @throws Exception 当in或out为空时会抛出错误
-     */
-    public ReaderBase setReader(InputStream in, OutputStream out)
+
+    public ReaderBase setReader(InputStream in, OutputStream out, final int type)
             throws Exception {
+        mType = type;
 
         if (in == null || out == null)
             throw new NullPointerException("in Or out is NULL!");
@@ -89,29 +73,33 @@ public class ReaderHelper {
                 @Override
                 public void onLostConnect() {
                     if (mListener != null) {
-                        mListener.onLostConnect();
+                        mListener.onLostConnect(type);
                     }
                 }
 
                 @Override
-                public void analyData(MessageTran msgTran) {
+                public void analyData(byte[] btData) {
+                    if (mListener != null) {
+                        if (mType == Constancts.TYPE_DEV) {
+                            mListener.onDEVInfo(type, btData);
+                        } else if (mType == Constancts.TYPE_EPC) {
+                            mListener.onEPCInfo(type, btData);
+                        }
+                    }
                 }
 
                 @Override
                 public void reciveData(byte[] btAryReceiveData) {
                     if (mListener != null) {
-                        //mListener.onRawInfo(btAryReceiveData);
-                        if (btAryReceiveData.length >=Utils.LENGTH_RAW_RFID) {
-                            mListener.onEPCInfo(btAryReceiveData);
-                        } else if (btAryReceiveData.length ==Utils.LENGTH_RAW_WEIGHT) {
-                            mListener.onWeightInfo(btAryReceiveData);
+                        if (mType == Constancts.TYPE_DEV &&
+                                btAryReceiveData.length == 10) {
+                            mListener.onDEVInfo(11, btAryReceiveData);
                         }
                     }
                 }
 
                 @Override
                 public void sendData(byte[] btArySendData) {
-
                 }
             };
         }
@@ -119,18 +107,10 @@ public class ReaderHelper {
         return mReader;
     }
 
-    /**
-     * 返回helper中全局的读写器基类。
-     * 
-     * @return helper中全局的读写器基类
-     * @throws Exception
-     *             当helper中全局的读写器基类为空时会抛出错误
-     */
     public ReaderBase getReader() throws Exception {
         if (mReader == null) {
             throw new NullPointerException("mReader is Null!");
         }
-
         return mReader;
     }
 

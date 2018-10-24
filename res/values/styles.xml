@@ -23,4 +23,11 @@
         <item name="android:backgroundDimEnabled">true</item><!--模糊-->
         <item name="android:backgroundDimAmount">0.5</item>
     </style>
+
+    <style name="RadiobuttonStyle" parent="@android:attr/radioButtonStyle">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/left_msg_size</item>
+        <item name="android:textColor">@color/dialog_black</item>
+    </style>
+
 </resources>

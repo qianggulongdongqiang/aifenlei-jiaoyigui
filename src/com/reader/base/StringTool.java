@@ -1,25 +1,57 @@
 package com.reader.base;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 public class StringTool {
 
-	/**
-	 * ×Ö·û´®×ª16½øÖÆÊı×é£¬×Ö·û´®ÒÔ¿Õ¸ñ·Ö¸î¡£
-	 * @param strHexValue	16½øÖÆ×Ö·û´®
-	 * @return	Êı×é
-	 */
-	public static byte[] stringToByteArray(String strHexValue) {
-		String[] strAryHex = strHexValue.split(" ");
+    /**
+     * å­—ç¬¦ä¸²è½¬16è¿›åˆ¶æ•°ç»„ï¼Œå­—ç¬¦ä¸²ä»¥ç©ºæ ¼åˆ†å‰²ã€‚
+     * 
+     * @param strHexValue
+     *            16è¿›åˆ¶å­—ç¬¦ä¸²
+     * @return æ•°ç»„
+     */
+    public static byte[] stringToByteArray(String strHexValue) {
+        String[] strAryHex = strHexValue.split(" ");
         byte[] btAryHex = new byte[strAryHex.length];
 
         try {
-			int nIndex = 0;
-			for (String strTemp : strAryHex) {
-			    btAryHex[nIndex] = (byte) Integer.parseInt(strTemp, 16);
-			    nIndex++;
-			}
+            int nIndex = 0;
+            for (String strTemp : strAryHex) {
+                btAryHex[nIndex] = (byte) Integer.parseInt(strTemp, 16);
+                nIndex++;
+            }
+        } catch (NumberFormatException e) {
+        }
+
+        return btAryHex;
+    }
+
+    /**
+     * å­—ç¬¦æ•°ç»„è½¬ä¸º16è¿›åˆ¶æ•°ç»„ã€‚
+     * 
+     * @param strAryHex
+     *            è¦è½¬æ¢çš„å­—ç¬¦ä¸²æ•°ç»„
+     * @param nLen
+     *            é•¿åº¦
+     * @return æ•°ç»„
+     */
+    public static byte[] stringArrayToByteArray(String[] strAryHex, int nLen) {
+        if (strAryHex == null)
+            return null;
+
+        if (strAryHex.length < nLen) {
+            nLen = strAryHex.length;
+        }
+
+        byte[] btAryHex = new byte[nLen];
+
+        try {
+            for (int i = 0; i < nLen; i++) {
+                btAryHex[i] = (byte) Integer.parseInt(strAryHex[i], 16);
+            }
         } catch (NumberFormatException e) {
 
         }
@@ -27,59 +59,114 @@ public class StringTool {
         return btAryHex;
     }
 
-	/**
-	 * ×Ö·ûÊı×é×ªÎª16½øÖÆÊı×é¡£
-	 * @param strAryHex	Òª×ª»»µÄ×Ö·û´®Êı×é
-	 * @param nLen		³¤¶È
-	 * @return	Êı×é
-	 */
-    public static byte[] stringArrayToByteArray(String[] strAryHex, int nLen) {
-    	if (strAryHex == null) return null;
-
-    	if (strAryHex.length < nLen) {
-    		nLen = strAryHex.length;
-    	}
-
-    	byte[] btAryHex = new byte[nLen];
-
-    	try {
-    		for (int i = 0; i < nLen; i++) {
-    			btAryHex[i] = (byte) Integer.parseInt(strAryHex[i], 16);
-    		}
-    	} catch (NumberFormatException e) {
-	
+    /**
+     * 16è¿›åˆ¶å­—ç¬¦æ•°ç»„è½¬æˆå­—ç¬¦ä¸²ã€‚
+     * 
+     * @param btAryHex
+     *            è¦è½¬æ¢çš„å­—ç¬¦ä¸²æ•°ç»„
+     * @param nIndex
+     *            èµ·å§‹ä½ç½®
+     * @param nLen
+     *            é•¿åº¦
+     * @return å­—ç¬¦ä¸²
+     */
+    public static String byteArrayToString(byte[] btAryHex, int nIndex, int nLen) {
+        if (nIndex + nLen > btAryHex.length) {
+            nLen = btAryHex.length - nIndex;
         }
 
-    	return btAryHex;
+        String strResult = String.format("%02X", btAryHex[nIndex]);
+        for (int nloop = nIndex + 1; nloop < nIndex + nLen; nloop++) {
+            String strTemp = String.format("%02X", btAryHex[nloop]);
+            strResult += strTemp;
+        }
+
+        return strResult;
     }
 
-	/**
-	 * 16½øÖÆ×Ö·ûÊı×é×ª³É×Ö·û´®¡£
-	 * @param btAryHex	Òª×ª»»µÄ×Ö·û´®Êı×é
-	 * @param nIndex	ÆğÊ¼Î»ÖÃ
-	 * @param nLen		³¤¶È
-	 * @return	×Ö·û´®
-	 */
-    public static String byteArrayToString(byte[] btAryHex, int nIndex, int nLen) {
-    	if (nIndex + nLen > btAryHex.length) {
-    		nLen = btAryHex.length - nIndex;
-    	}
+    public static String encodeHex(byte[] bytes) {
+        StringBuffer buf = new StringBuffer(bytes.length * 2);
+        int i;
 
-    	String strResult = String.format("%02X", btAryHex[nIndex]);
-    	for (int nloop = nIndex + 1; nloop < nIndex + nLen; nloop++ ) {
-    		String strTemp = String.format(" %02X", btAryHex[nloop]);
-
-    		strResult += strTemp;
-    	}
-
-    	return strResult;
+        for (i = 0; i < bytes.length; i++) {
+            if (((int) bytes[i] & 0xff) < 0x10) {
+                buf.append("0");
+            }
+            buf.append(Long.toString((int) bytes[i] & 0xff, 16));
+        }
+        return buf.toString().toUpperCase();
     }
 
-	/**
-	 * ½«×Ö·û´®°´ÕÕÖ¸¶¨³¤¶È½ØÈ¡²¢×ª´æÎª×Ö·ûÊı×é£¬¿Õ¸ñºöÂÔ¡£
-	 * @param strValue	ÊäÈë×Ö·û´®
-	 * @return	Êı×é
-	 */
+    public static String[] encodeHexToArrays(byte[] bytes) {
+        return stringToStringArray(encodeHex(bytes), 2);
+    }
+
+    public static String decode(String bytes) {
+        String hexString = "0123456789ABCDEF";
+        ByteArrayOutputStream baos = new ByteArrayOutputStream(
+                bytes.length() / 2);
+        for (int i = 0; i < bytes.length(); i += 2)
+            baos.write((hexString.indexOf(bytes.charAt(i)) << 4 | hexString
+                    .indexOf(bytes.charAt(i + 1))));
+        hexString = new String(baos.toByteArray());
+        return hexString;
+    }
+
+    /** used to decode Qr */
+    public static String decodeBytes(byte[] rawBytes) {
+        String bytes = encodeHex(rawBytes);
+        String hexString = "0123456789ABCDEF";
+        ByteArrayOutputStream baos = new ByteArrayOutputStream(
+                bytes.length() / 2);
+        for (int i = 0; i < bytes.length(); i += 2)
+            baos.write((hexString.indexOf(bytes.charAt(i)) << 4 | hexString
+                    .indexOf(bytes.charAt(i + 1))));
+        hexString = new String(baos.toByteArray());
+        return hexString;
+    }
+
+    public static String decodeBytesForWeight(byte[] rawBytes) {
+        int length = 8;
+        byte temp;
+        for (int i = 1; i < length/2; i++) {
+            temp = rawBytes[i];
+            rawBytes[i] = rawBytes[length - i];
+            rawBytes[length - i] = temp;
+        }
+        String bytes = encodeHex(rawBytes);
+        String hexString = "0123456789ABCDEF";
+        ByteArrayOutputStream baos = new ByteArrayOutputStream(
+                bytes.length() / 2);
+        for (int i = 0; i < bytes.length(); i += 2)
+            baos.write((hexString.indexOf(bytes.charAt(i)) << 4 | hexString
+                    .indexOf(bytes.charAt(i + 1))));
+        hexString = new String(baos.toByteArray());
+        return hexString.substring(1,8);
+    }
+
+    /** used to decode Epc */
+    public static String decodeBytes(byte[] rawBytes, int start, int length) {
+        if (length > rawBytes.length) {
+            length = rawBytes.length;
+        }
+        String bytes = encodeHex(rawBytes);
+        String hexString = "0123456789ABCDEF";
+        ByteArrayOutputStream baos = new ByteArrayOutputStream(
+                bytes.length() / 2);
+        for (int i = 0; i < bytes.length(); i += 2)
+            baos.write((hexString.indexOf(bytes.charAt(i)) << 4 | hexString
+                    .indexOf(bytes.charAt(i + 1))));
+        hexString = new String(baos.toByteArray());
+        return hexString.substring(start, length);
+    }
+
+    /**
+     * å°†å­—ç¬¦ä¸²æŒ‰ç…§æŒ‡å®šé•¿åº¦æˆªå–å¹¶è½¬å­˜ä¸ºå­—ç¬¦æ•°ç»„ï¼Œç©ºæ ¼å¿½ç•¥ã€‚
+     * 
+     * @param strValue
+     *            è¾“å…¥å­—ç¬¦ä¸²
+     * @return æ•°ç»„
+     */
     public static String[] stringToStringArray(String strValue, int nLen) {
         String[] strAryResult = null;
 
@@ -93,18 +180,19 @@ public class StringTool {
                     continue;
                 } else {
                     nTemp++;
-                    
+
                     if (!Pattern.compile("^(([A-F])*([a-f])*(\\d)*)$")
-                    		.matcher(strValue.substring(nloop, nloop + 1))
-                    		.matches()) {
+                            .matcher(strValue.substring(nloop, nloop + 1))
+                            .matches()) {
                         return strAryResult;
                     }
 
                     strTemp += strValue.substring(nloop, nloop + 1);
 
-                    //ÅĞ¶ÏÊÇ·ñµ½´ï½ØÈ¡³¤¶È
-                    if ((nTemp == nLen) || (nloop == strValue.length() - 1 
-                    		&& (strTemp != null && !strTemp.equals("")))) {
+                    // åˆ¤æ–­æ˜¯å¦åˆ°è¾¾æˆªå–é•¿åº¦
+                    if ((nTemp == nLen)
+                            || (nloop == strValue.length() - 1 && (strTemp != null && !strTemp
+                                    .equals("")))) {
                         strListResult.add(strTemp);
                         nTemp = 0;
                         strTemp = "";
@@ -113,9 +201,9 @@ public class StringTool {
             }
 
             if (strListResult.size() > 0) {
-            	strAryResult = new String[strListResult.size()];
+                strAryResult = new String[strListResult.size()];
                 for (int i = 0; i < strAryResult.length; i++) {
-                	strAryResult[i] = strListResult.get(i);
+                    strAryResult[i] = strListResult.get(i);
                 }
             }
         }

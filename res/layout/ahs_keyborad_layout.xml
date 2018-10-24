@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <com.arcfun.uhfclient.view.FixKeyboardView
+        android:id="@+id/input_keybord"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/login_button_disable"
+        android:keyBackground="@anim/keyboard_light_selector"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:keyPreviewHeight="@dimen/keyboard_preview_height"
+        android:keyPreviewLayout="@layout/ahs_key_preview_layout"
+        android:keyTextColor="@color/login_title"
+        android:keyTextSize="@dimen/phone_number_size"
+        android:labelTextSize="@dimen/phone_number_size"
+        android:shadowColor="@color/login_title"
+        android:shadowRadius="0" />
+
+</merge>

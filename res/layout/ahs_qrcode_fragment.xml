@@ -1,0 +1,67 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/ahs_fragment_bg"
+    android:orientation="vertical"
+    android:weightSum="14" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:gravity="center"
+        android:orientation="vertical" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/login_qr_title1"
+            android:textColor="@color/login_title"
+            android:textSize="@dimen/fragment_title_size"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="6"
+        android:background="@drawable/bg_miniwhit1"
+        android:gravity="center" >
+
+        <ImageView
+            android:id="@+id/barcode"
+            android:layout_width="@dimen/fragement_qrcode_height"
+            android:layout_height="@dimen/fragement_qrcode_height"
+            android:contentDescription="@string/login_qr_title1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="5"
+        android:gravity="center"
+        android:orientation="vertical" >
+
+        <ImageView
+            android:id="@+id/switch_rfid"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/fragement_switch_height"
+            android:clickable="true"
+            android:contentDescription="@string/login_rfid_tip"
+            android:src="@anim/button_rfid_selector" />
+
+        <TextView
+            android:id="@+id/switch_qr_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/fragement_tips_height"
+            android:layout_marginTop="@dimen/fragement_tips_margin_top"
+            android:drawableEnd="@drawable/icon_enter"
+            android:drawablePadding="@dimen/fragement_tips_padding"
+            android:gravity="center"
+            android:text="@string/login_phone_tip"
+            android:textColor="@color/dialog_default"
+            android:textSize="@dimen/fragment_tips_size" />
+    </LinearLayout>
+
+</LinearLayout>

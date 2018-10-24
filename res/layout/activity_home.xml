@@ -1,14 +1,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_land"
+    android:background="@drawable/bg_port"
     android:orientation="vertical" >
 
     <include layout="@layout/activity_title" />
 
     <LinearLayout
+        android:id="@+id/slide_List_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginBottom="@dimen/image_top_margin"
         android:layout_marginEnd="@dimen/image_left_margin"
         android:layout_marginStart="@dimen/image_left_margin"
@@ -17,27 +18,27 @@
         android:weightSum="3" >
 
         <ImageView
-            android:layout_width="wrap_content"
+            android:id="@+id/banner1"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
             android:contentDescription="@string/actionbar_top"
-            android:src="@drawable/banner1" />
+            android:layout_weight="1" />
 
         <ImageView
-            android:layout_width="wrap_content"
+            android:id="@+id/banner2"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
             android:layout_marginTop="@dimen/image_top_margin"
             android:contentDescription="@string/actionbar_top"
-            android:src="@drawable/banner2" />
+            android:layout_weight="1" />
 
         <ImageView
-            android:layout_width="wrap_content"
+            android:id="@+id/banner3"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
             android:layout_marginTop="@dimen/image_top_margin"
             android:contentDescription="@string/actionbar_top"
-            android:src="@drawable/banner3" />
+            android:layout_weight="1" />
     </LinearLayout>
 
 </LinearLayout>

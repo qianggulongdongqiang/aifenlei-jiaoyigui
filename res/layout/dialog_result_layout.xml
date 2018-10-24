@@ -1,0 +1,84 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/dialog_layout_width"
+    android:layout_height="wrap_content" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_margin="@dimen/dialog_close_half"
+        android:background="@drawable/rectangle_border_bg"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/dialog_top_margin" >
+
+        <include layout="@layout/dialog_result_base" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/dialog_dot_gap"
+            android:layout_marginEnd="@dimen/dialog_dot_margin"
+            android:layout_marginStart="@dimen/dialog_dot_margin"
+            android:layout_marginTop="@dimen/dialog_dot_gap"
+            android:background="@drawable/dotted_dialog_line"
+            android:layerType="software" />
+
+        <include layout="@layout/dialog_result_main"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/dialog_dot_gap"
+            android:layout_marginEnd="@dimen/dialog_dot_margin"
+            android:layout_marginStart="@dimen/dialog_dot_margin"
+            android:layout_marginTop="@dimen/dialog_dot_gap"
+            android:background="@drawable/dotted_dialog_line"
+            android:layerType="software" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dialog_btn_margin_bottom"
+            android:orientation="horizontal"
+            android:weightSum="2" >
+            <ImageView
+                android:id="@+id/result_back"
+                android:layout_width="@dimen/dialog_wel_btn_width"
+                android:layout_height="@dimen/dialog_btn_height"
+                android:layout_weight="1"
+                android:src="@drawable/success_back"
+                android:contentDescription="@string/empty" />
+            <ImageView
+                android:id="@+id/result_continue"
+                android:layout_width="@dimen/dialog_wel_btn_width"
+                android:layout_height="@dimen/dialog_btn_height"
+                android:layout_weight="1"
+                android:src="@drawable/success_continue"
+                android:contentDescription="@string/empty" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/commit_back"
+            android:layout_width="@dimen/dialog_btn_width"
+            android:layout_height="@dimen/dialog_btn_height"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dialog_btn_margin_bottom"
+            android:layout_marginBottom="@dimen/dialog_btn_margin_bottom"
+            android:src="@drawable/commit_back"
+            android:contentDescription="@string/ok" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/close"
+        android:layout_width="@dimen/dialog_close_width"
+        android:layout_height="@dimen/dialog_close_width"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/circle_border"
+        android:contentDescription="@string/dialog_delete"
+        android:src="@drawable/delete" />
+
+</RelativeLayout>

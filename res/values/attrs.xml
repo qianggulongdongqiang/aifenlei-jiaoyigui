@@ -8,5 +8,4 @@
         <attr name="backgroud_unchecked" format="reference" />
         <attr name="backgroud_checked" format="reference" />
     </declare-styleable>
-
 </resources>

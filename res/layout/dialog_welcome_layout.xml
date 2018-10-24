@@ -1,0 +1,85 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/dialog_layout_width"
+    android:layout_height="wrap_content" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_margin="@dimen/dialog_close_half"
+        android:background="@drawable/rectangle_border_bg"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/dialog_top_margin" >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:layout_marginStart="@dimen/dialog_top_margin"
+            android:layout_marginBottom="@dimen/dialog_top_margin"
+            android:layout_marginTop="@dimen/dialog_top_margin"
+            android:text="@string/dialog_welcome_title"
+            android:textColor="@color/dialog_info"
+            android:textSize="@dimen/dialog_welcome_title" />
+
+        <TextView
+            android:id="@+id/welcome_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/dialog_black"
+            android:textSize="@dimen/left_msg_size" />
+
+        <TextView
+            android:id="@+id/welcome_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/dialog_black"
+            android:textSize="@dimen/left_msg_size" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/dialog_top_margin"
+            android:textColor="@color/dialog_info"
+            android:text="@string/dialog_welcome_msg"
+            android:textSize="@dimen/dialog_welcome_title" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dialog_btn_margin_bottom"
+            android:layout_marginBottom="@dimen/dialog_top_margin"
+            android:orientation="horizontal"
+            android:weightSum="2" >
+            <ImageView
+                android:id="@+id/welcome_cancel"
+                android:layout_width="@dimen/dialog_wel_btn_width"
+                android:layout_height="@dimen/dialog_btn_height"
+                android:layout_weight="1"
+                android:src="@drawable/welcome_cancel"
+                android:contentDescription="@string/empty" />
+            <ImageView
+                android:id="@+id/welcome_ok"
+                android:layout_width="@dimen/dialog_wel_btn_width"
+                android:layout_height="@dimen/dialog_btn_height"
+                android:layout_weight="1"
+                android:src="@drawable/welcome_ok"
+                android:contentDescription="@string/empty" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/close"
+        android:layout_width="@dimen/dialog_close_width"
+        android:layout_height="@dimen/dialog_close_width"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/circle_border"
+        android:contentDescription="@string/dialog_delete"
+        android:src="@drawable/delete" />
+
+</RelativeLayout>

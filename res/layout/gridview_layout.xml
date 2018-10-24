@@ -6,6 +6,7 @@
     android:layout_marginTop="30dp"
     android:columnWidth="@dimen/gridview_columnwidth"
     android:scrollbars="none"
+    android:gravity="center"
     android:numColumns="@integer/num_columns"
     android:stretchMode="none" >
 
