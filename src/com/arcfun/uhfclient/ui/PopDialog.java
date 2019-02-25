@@ -19,6 +19,7 @@ import com.arcfun.uhfclient.data.ResultDataInfo;
 import com.arcfun.uhfclient.data.ResultOrderInfo;
 import com.arcfun.uhfclient.net.HttpRequest;
 import com.arcfun.uhfclient.utils.LogUtils;
+import com.arcfun.uhfclient.utils.SharedPreferencesUtils;
 import com.arcfun.uhfclient.utils.Utils;
 
 public class PopDialog extends Dialog implements OnClickListener {
@@ -27,6 +28,7 @@ public class PopDialog extends Dialog implements OnClickListener {
     private MessageInfo mMessageInfo;
     private Context mContext;
     private OnUpdateListener mListeners;
+    private String token = null;
 
     public PopDialog(Context context, MessageInfo info, OnUpdateListener listener) {
         this(context, info, R.style.PopDialog);
@@ -37,6 +39,7 @@ public class PopDialog extends Dialog implements OnClickListener {
         super(context, themeResId);
         this.mContext = context;
         this.mMessageInfo = info;
+        this.token = SharedPreferencesUtils.getToken(context);
     }
 
     @Override
@@ -107,6 +110,7 @@ public class PopDialog extends Dialog implements OnClickListener {
     private String buildGoodJson() {
         JSONObject object = new JSONObject();
         try {
+            object.put("token", token);
             object.put("user_id", String.valueOf(mMessageInfo.getUserId()));
 
             JSONObject good = new JSONObject();

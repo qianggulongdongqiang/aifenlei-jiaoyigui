@@ -1,11 +1,14 @@
 package com.arcfun.uhfclient.ui;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.os.Parcelable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -211,10 +214,34 @@ public class LoginMainActivity extends AhsBaseActivity implements Listener,
                         mInfo = best.get(0);
                         if (mInfo != null && mPosition == FRAGMENT_LOGIN_RFID_1) {
                             showFragment(FRAGMENT_LOGIN_RFID_2);
+                            //Message msg = mHandler.obtainMessage(MSG_SYNC_RFID_MSG);
+                            //mHandler.sendMessageDelayed(msg, 1000);
                         }
                     }
                 }
                 mEpcData = null;
+            };
+        }.execute(url);
+    }
+
+    private void getOwnerByRfids(final String json) {
+        String url = HttpRequest.URL_HEAD + HttpRequest.GET_CUSTOMER_BY_RFIDS;
+        new AsyncTask<String, Void, String>() {
+            @Override
+            protected String doInBackground(String... params) {
+                byte[] data = HttpRequest.sendPost(params[0], json);
+                if (data == null) {
+                    return null;
+                }
+                String result = new String(data);
+                LogUtils.d(TAG, "Owners:" + result);
+                return result;
+            }
+            @Override
+            protected void onPostExecute(String result) {
+                if (result != null) {
+                    mOwnerList = Utils.parseOwnerData(result);
+                }
             };
         }.execute(url);
     }
@@ -263,7 +290,18 @@ public class LoginMainActivity extends AhsBaseActivity implements Listener,
 
     @Override
     public void onEPCInfo(int type, byte[] epcData) {
+        String data[] = StringTool.encodeHexToArrays(epcData);
         handleEpcInfo(epcData);
+        if (SharedPreferencesUtils.getDebug(this)) {
+            String[] raw = new String[2];
+            Message msg = mHandler.obtainMessage(MSG_UPDATE_DEBUG);
+            raw[0] = "EPC time: " + Utils.getTime();
+            raw[1] = "\nlength=" + data.length + ", type=" + type + "\n"
+                    + Arrays.toString(data) + "\n" + Arrays.toString(epcData)
+                    + "\n" + StringTool.decodeBytes(epcData, 1, 13);
+            msg.obj = raw;
+            msg.sendToTarget();
+        }
     }
 
     @Override
@@ -459,5 +497,24 @@ public class LoginMainActivity extends AhsBaseActivity implements Listener,
             }
         }.execute();
     }
+
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(android.os.Message msg) {
+            String[] data = (String[]) msg.obj;
+            switch (msg.what) {
+                case MSG_UPDATE_DEBUG:
+                    Utils.showMsg(LoginMainActivity.this, "login :" +
+                            data[0] + data[1]);
+                    break;
+                case MSG_SYNC_RFID_MSG:
+                    getOwnerByRfids(Utils.buildRfidJson(mRfidList));
+                    break;
+
+                default:
+                    break;
+            }
+        }
+    };
 
 }

@@ -45,13 +45,13 @@
     <string name="login_qr_title2">"公众号账户"</string>
     <string name="login_qr_title3">"请确认账号是否正确"</string>
     
-    <string name="login_rfid_title1">"将RFID钥匙链靠近识别区"</string>
-    <string name="login_rfid_title2">"RFID感应账户"</string>
-    <string name="login_rfid_title3">"将RFID钥匙链靠近识别区"</string>
+    <string name="login_rfid_title1">"将回收卡钥匙链靠近识别区"</string>
+    <string name="login_rfid_title2">"回收卡感应账户"</string>
+    <string name="login_rfid_title3">"将回收卡钥匙链靠近识别区"</string>
     <string name="login_rfid_title3_msg">"请确认身份识别是否正确"</string>
 
     <string name="login_phone_title1">"手机账户"</string>
-    <string name="login_rfid_tip">"我有RFID卡识别"</string>
+    <string name="login_rfid_tip">"我有回收卡卡识别"</string>
     <string name="login_qr_tip">"切换扫描登录"</string>
     <string name="login_phone_tip">"或选择手机号登录"</string>
     <string name="login_phone_input">"请输入手机号"</string>

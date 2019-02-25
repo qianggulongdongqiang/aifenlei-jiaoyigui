@@ -47,10 +47,11 @@ public class HttpRequest {
     public static byte[] sendPost(String urlPath, String param) {
         PrintWriter out = null;
         BufferedReader in = null;
+        HttpURLConnection conn = null;
         byte[] result = null;
         try {
             URL url = new URL(urlPath);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn = (HttpURLConnection) url.openConnection();
             // 设置通用的请求属性
             conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
             conn.setConnectTimeout(5000);// 设置连接超时,5000ms
@@ -79,6 +80,9 @@ public class HttpRequest {
             e.printStackTrace();
         } finally {
             try {
+                if(conn != null){
+                    conn.disconnect();
+                }
                 if (out != null) {
                     out.close();
                 }
